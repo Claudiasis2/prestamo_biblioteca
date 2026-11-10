@@ -1,10 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.Models;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
+
 
 namespace ProyectoConjuntoMaterialPrestamo.EF
 {
@@ -15,15 +13,12 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var filas = await db.Usuarios
-                    .OrderBy(f => f.IdUsuario)
-                    .ToListAsync<Usuario>();
+                var filas = await db.Usuarios.ToListAsync<Usuario>();
                 return filas.Select(fila => Convertir(fila)).ToList();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                Console.WriteLine($"Error accediendo a DB: {ex.Message}");
-                return new List<Usuario>();
+                throw new ArgumentException("Error al buscar departamentos.", ex);
             }
         }
 

@@ -36,10 +36,11 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 
         public static async Task<int> InsertarAsync(Usuario e)
         {
-            ComprobarTexto(e.NombreUsuario, 20, false);
+            ComprobarTexto(e.NombreUsuario, 20, true);
             ComprobarTexto(e.PrimerApellido, 20, true);
-            ComprobarTexto(e.SegundoApellido, 20, true);
-            ComprobarTexto(e.Email, 100, true);
+            ComprobarTexto(e.SegundoApellido, 20, false);
+            ComprobarTexto(e.Email, 255, true);
+            ComprobarTexto(e.Password, 50, true);
 
             return await UsuarioEF.InsertarAsync(e);
         }
