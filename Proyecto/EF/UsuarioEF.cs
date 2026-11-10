@@ -32,9 +32,14 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = await db.Usuarios
-                .SingleOrDefaultAsync(f => f.IdUsuario == id);
-                return fila is null ? null : Convertir(fila);
+                /*var fila = await db.Usuarios
+                .SingleOrDefaultAsync(f => f.IdUsuario == id);*/
+
+                
+                var f = db.Usuarios;
+                var fila = f.SingleOrDefaultAsync(f => f.IdUsuario == id);
+                Console.WriteLine($"Usuario encontrado: {fila.Result?.NombreUsuario} {fila.Result?.PrimerApellido} {fila.Result?.SegundoApellido} {fila.Result?.Email}");
+                return null;
             }
             catch (Exception ex)
             {
@@ -92,7 +97,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
         }
 
-        public static Usuario Convertir(Usuario fila)
+        public static async Task<Usuario> Convertir(Usuario fila)
         {
             return new Usuario
             {

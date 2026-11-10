@@ -121,6 +121,9 @@ static class GestionUsuario
         Console.WriteLine("BORRAR DE USUARIOS");
         if (!int.TryParse(LeerTexto("Introduce el Id a buscar: "), out int id))
             throw new ArgumentException("Escribe un entero.");
+
+        
+
         var e = await UsuarioServicio.BuscarAsync(id);
         /*if (e is null)
         {
