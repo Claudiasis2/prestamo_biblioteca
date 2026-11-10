@@ -52,15 +52,14 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 using var db = ConexionEf.CrearContexto();
                 var fila = new Usuario
                 {
+                    Email = e.Email,
                     NombreUsuario = e.NombreUsuario,
                     PrimerApellido = e.PrimerApellido,
                     SegundoApellido = e.SegundoApellido,
-                    Email = e.Email,
                     Activo = e.Activo,
                     Password = e.Password
                 };
 
-                
                 db.Usuarios.Add(fila);
                 await db.SaveChangesAsync();
                 return fila.IdUsuario;

@@ -20,7 +20,8 @@ static class GestionUsuario
             Console.WriteLine("1 Listar");
             Console.WriteLine("2 Buscar"); 
             Console.WriteLine("3 Alta");
-            Console.WriteLine("4 Salario | 5 Borrar");
+            Console.WriteLine("4 Modificar");
+            Console.WriteLine("5 Borrar");
             Console.WriteLine("0 Salir");
             string opcion = LeerTexto("Opción: ");
             if (opcion == "0") break;
@@ -30,13 +31,13 @@ static class GestionUsuario
                 {
                     case "1": await ListarUsuarioAsync();
                         break;
-                    case "2": //await BuscarAsync(); 
+                    case "2": await BuscarUsuarioAsync(); 
                         break;
                     case "3": await InsertarUsuarioAsync();
                         break;
-                    case "4": //await CambiarSalarioAsync(); 
+                    case "4": await ModificarUsuarioAsync(); 
                         break;
-                    case "5": //await BorrarAsync(); 
+                    case "5": await BorratUsuarioAsync(); 
                         break;
                     default:
                         Console.WriteLine("Opción no válida.");
@@ -106,6 +107,28 @@ static class GestionUsuario
             break;
         }
     }
+
+    async static Task ModificarUsuarioAsync()
+    {
+        Console.Clear();
+        Console.WriteLine("MODIFICAR DE USUARIOS");
+        
+    }
+
+    async static Task BorratUsuarioAsync()
+    {
+        Console.Clear();
+        Console.WriteLine("BORRAR DE USUARIOS");
+
+    }
+
+    async static Task BuscarUsuarioAsync()
+    {
+        Console.Clear();
+        Console.WriteLine("BUSCAR DE USUARIOS");
+
+    }
+    
 
 
 }
