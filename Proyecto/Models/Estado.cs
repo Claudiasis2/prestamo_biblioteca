@@ -13,5 +13,7 @@ public partial class Estado
 
     public virtual ICollection<Ejemplar> Ejemplars { get; set; } = new List<Ejemplar>();
 
+    public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
+
     public virtual ICollection<SolicitudPrestamo> SolicitudPrestamos { get; set; } = new List<SolicitudPrestamo>();
 }

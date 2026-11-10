@@ -13,7 +13,7 @@ public partial class Dvd
 
     public short? DuracionMinutos { get; set; }
 
-    public int FkmaterialPrestamo { get; set; }
+    public int FkmaterialBiblioteca { get; set; }
 
-    public virtual MaterialBiblioteca FkmaterialPrestamoNavigation { get; set; }
+    public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 }
