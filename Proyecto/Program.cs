@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.Models;
-using System.Globalization;
 
 class Program
 {
@@ -9,6 +8,14 @@ class Program
     {
         try
         {
+            /*
+            using var db = ConexionEf.CrearContexto();
+            var filas = await db.Usuarios.ToListAsync<Usuario>();
+            foreach (var fila in filas)
+            {
+                Console.WriteLine($"{fila.IdUsuario} {fila.NombreUsuario} {fila.PrimerApellido} {fila.SegundoApellido} {fila.Email}");
+            }*/
+            
             GestionUsuario.Menu();
         }
         catch (ArgumentException ex)

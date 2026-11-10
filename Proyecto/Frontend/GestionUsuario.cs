@@ -15,7 +15,7 @@ static class GestionUsuario
     {
         while (true)
         {
-            Console.Clear();
+            
             Console.WriteLine("GESTION DE USUARIOS");
             Console.WriteLine("1 Listar");
             Console.WriteLine("2 Buscar"); 
@@ -91,11 +91,19 @@ static class GestionUsuario
 
     async static Task ListarUsuarioAsync()
     {
+        Console.Clear();
+        Console.WriteLine("LISTADO DE USUARIOS");
         var lista = await UsuarioServicio.ListarAsync();
-        foreach (var e in lista)
+        foreach (var fila in lista)
         {
-            Console.WriteLine(
-            $"{e.IdUsuario} {e.NombreUsuario} {e.PrimerApellido} {e.SegundoApellido} {e.Email}");
+            Console.WriteLine($"{fila.IdUsuario} {fila.NombreUsuario} {fila.PrimerApellido} {fila.SegundoApellido} {fila.Email}");
+        }
+        while (true)
+        {
+            Console.WriteLine("\n\nToca una tecla para continuar...");
+            Console.ReadLine();
+            Console.Clear();
+            break;
         }
     }
 

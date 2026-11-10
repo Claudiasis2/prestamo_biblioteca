@@ -8,17 +8,22 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 {
     public static class UsuarioEF
     {
-        public static async Task<List<Usuario>> ListarAsync()
+
+
+
+        public static List<Usuario> ListarAsync()
         {
+
             try
             {
-                await using var db = ConexionEf.CrearContexto();
-                var filas = await db.Usuarios.ToListAsync<Usuario>();
-                return filas.Select(fila => Convertir(fila)).ToList();
+                using var db = ConexionEf.CrearContexto();
+                var filas = db.Usuarios
+                .OrderBy(f => f.Email).ToList();
+                return filas;
             }
             catch (SqlException ex)
             {
-                throw new ArgumentException("Error al buscar departamentos.", ex);
+                throw new ArgumentException("Error al listar empleados por departamento.", ex);
             }
         }
 
@@ -38,25 +43,29 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             }
         }
 
+
+
         public static async Task<int> InsertarAsync(Usuario e)
         {
             try
             {
-                await using var db = ConexionEf.CrearContexto();
+                using var db = ConexionEf.CrearContexto();
                 var fila = new Usuario
                 {
-                    IdUsuario = e.IdUsuario,
                     NombreUsuario = e.NombreUsuario,
                     PrimerApellido = e.PrimerApellido,
                     SegundoApellido = e.SegundoApellido,
                     Email = e.Email,
                     Activo = e.Activo,
+                    Password = e.Password
                 };
+
+                
                 db.Usuarios.Add(fila);
                 await db.SaveChangesAsync();
                 return fila.IdUsuario;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 Console.WriteLine($"Error accediendo a DB: {ex.Message}");
                 return 0;

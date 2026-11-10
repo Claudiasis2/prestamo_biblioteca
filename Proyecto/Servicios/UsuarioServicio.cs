@@ -9,7 +9,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
     public static class UsuarioServicio
     {
         public static async Task<List<Usuario>> ListarAsync()
-            => await UsuarioEF.ListarAsync();
+            => UsuarioEF.ListarAsync();
 
         public static async Task<Usuario?> BuscarAsync(int id)
         {
