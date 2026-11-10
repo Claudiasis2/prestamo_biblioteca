@@ -37,7 +37,7 @@ static class GestionUsuario
                         break;
                     case "4": await ModificarUsuarioAsync(); 
                         break;
-                    case "5": await BorratUsuarioAsync(); 
+                    case "5": await BorrarUsuarioAsync(); 
                         break;
                     default:
                         Console.WriteLine("Opción no válida.");
@@ -115,10 +115,23 @@ static class GestionUsuario
         
     }
 
-    async static Task BorratUsuarioAsync()
+    async static Task BorrarUsuarioAsync()
     {
         Console.Clear();
         Console.WriteLine("BORRAR DE USUARIOS");
+        if (!int.TryParse(LeerTexto("Introduce el Id a buscar: "), out int id))
+            throw new ArgumentException("Escribe un entero.");
+        var e = await UsuarioServicio.BuscarAsync(id);
+        /*if (e is null)
+        {
+            Console.WriteLine("No existe ese Id.");
+            return;
+        }
+        Mostrar(e);*/
+        if (LeerTexto("¿Borrar este empleado? (S/N): ").ToUpperInvariant() != "S")
+            return;
+        bool borrado = await UsuarioServicio.BorrarAsync(id);
+        Console.WriteLine(borrado ? "Empleado borrado." : "No se borró: ya no existe o tiene relaciones.");
 
     }
 

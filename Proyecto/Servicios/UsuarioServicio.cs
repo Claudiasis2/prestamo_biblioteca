@@ -47,7 +47,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 
         public static async Task<bool> BorrarAsync(int id)
         {
-            ComprobarId(id);
+            //ComprobarId(id);
             return await UsuarioEF.BorrarAsync(id);
         }
     }
