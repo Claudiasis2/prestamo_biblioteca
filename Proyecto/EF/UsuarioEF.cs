@@ -69,6 +69,33 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
         }
 
+        public static async Task<int> ModificarAsync(Usuario e)
+        {
+            try
+            {
+                await using var db = ConexionEf.CrearContexto();
+                var fila = new Usuario
+                {
+                    IdUsuario = e.IdUsuario,
+                    NombreUsuario = e.NombreUsuario,
+                    PrimerApellido = e.PrimerApellido,
+                    SegundoApellido = e.SegundoApellido,
+                    Email = e.Email,
+                    Activo = e.Activo,
+                };
+                db.Usuarios.Update(fila);
+                await db.SaveChangesAsync();
+                return fila.IdUsuario;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error accediendo a DB: {ex.Message}");
+                return 0;
+            }
+
+        }
+
+
         public static async Task<bool> BorrarAsync(int id)
         {
             try

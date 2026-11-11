@@ -36,12 +36,32 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 
         public static async Task<int> InsertarAsync(Usuario e)
         {
+            ComprobarCampos(e);
+
+            return await UsuarioEF.InsertarAsync(e);
+        }
+
+        public static async Task<int> ModificarAsync(Usuario e)
+        {
+            Usuario? usr = await BuscarAsync(e.IdUsuario);
+
+            if (usr is null)
+            {
+                throw new ArgumentException(
+                "No existe ese Id de usuario.");
+            }
+
+            ComprobarCampos(e);
+
+            return await UsuarioEF.ModificarAsync(e);
+        }
+
+        static void ComprobarCampos(Usuario e)
+        {
             ComprobarTexto(e.NombreUsuario, 20, false);
             ComprobarTexto(e.PrimerApellido, 20, true);
             ComprobarTexto(e.SegundoApellido, 20, true);
             ComprobarTexto(e.Email, 100, true);
-
-            return await UsuarioEF.InsertarAsync(e);
         }
 
         public static async Task<bool> BorrarAsync(int id)
