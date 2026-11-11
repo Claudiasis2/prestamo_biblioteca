@@ -3,16 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\frontend\\gestionempleado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:frontend\\gestionempleado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\servicios\\empleadoservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:servicios\\empleadoservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\ef\\empleadoef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:ef\\empleadoef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\ef\\usuarioef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:ef\\usuarioef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\servicios\\usuarioservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:servicios\\usuarioservicio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\frontend\\gestionusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:frontend\\gestionusuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|c:\\users\\usuario\\source\\repos\\prestamo_biblioteca\\proyecto\\ef\\usuarioef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0857C558-9D09-8E92-8ED4-51680711EB3B}|ProyectoConjuntoMaterialPrestamo.csproj|solutionrelative:ef\\usuarioef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -24,10 +36,6 @@
           "DockedWidth": 200,
           "SelectedChildIndex": 18,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -94,39 +102,78 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EmpleadoEF.cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\EF\\EmpleadoEF.cs",
+              "RelativeDocumentMoniker": "EF\\EmpleadoEF.cs",
+              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\EF\\EmpleadoEF.cs",
+              "RelativeToolTip": "EF\\EmpleadoEF.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAmwGUAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T13:33:45.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "EmpleadoServicio.cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Servicios\\EmpleadoServicio.cs",
+              "RelativeDocumentMoniker": "Servicios\\EmpleadoServicio.cs",
+              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Servicios\\EmpleadoServicio.cs",
+              "RelativeToolTip": "Servicios\\EmpleadoServicio.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAgwCgAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T13:31:23.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GestionEmpleado.cs",
+              "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Frontend\\GestionEmpleado.cs",
+              "RelativeDocumentMoniker": "Frontend\\GestionEmpleado.cs",
+              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Frontend\\GestionEmpleado.cs",
+              "RelativeToolTip": "Frontend\\GestionEmpleado.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAmwFQAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-11T13:26:37.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "GestionUsuario.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Frontend\\GestionUsuario.cs",
               "RelativeDocumentMoniker": "Frontend\\GestionUsuario.cs",
               "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Frontend\\GestionUsuario.cs",
               "RelativeToolTip": "Frontend\\GestionUsuario.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAANQAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAIYAAAAAAAAAAAAAAJIAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-10T18:03:25.602Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "UsuarioServicio.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Servicios\\UsuarioServicio.cs",
               "RelativeDocumentMoniker": "Servicios\\UsuarioServicio.cs",
               "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\Servicios\\UsuarioServicio.cs",
               "RelativeToolTip": "Servicios\\UsuarioServicio.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAmwDkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAA1wCIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-10T17:50:41.833Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "UsuarioEF.cs",
               "DocumentMoniker": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\EF\\UsuarioEF.cs",
               "RelativeDocumentMoniker": "EF\\UsuarioEF.cs",
-              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\EF\\UsuarioEF.cs",
-              "RelativeToolTip": "EF\\UsuarioEF.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAmwJMAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\Usuario\\source\\repos\\prestamo_biblioteca\\Proyecto\\EF\\UsuarioEF.cs*",
+              "RelativeToolTip": "EF\\UsuarioEF.cs*",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAAAIMAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-10T17:12:17.054Z",
               "EditorCaption": ""
