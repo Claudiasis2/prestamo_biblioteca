@@ -1,5 +1,4 @@
-﻿using ProyectoConjuntoMaterialPrestamo.EF;
-using ProyectoConjuntoMaterialPrestamo.Models;
+﻿using ProyectoConjuntoMaterialPrestamo.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,14 +7,49 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 {
     public static class UsuarioServicio
     {
-        public static async Task<List<Usuario>> ListarAsync()
-            => await UsuarioEF.ListarAsync();
 
         public static async Task<Usuario?> BuscarAsync(int id)
         {
-            ComprobarId(id);
-            return await UsuarioEF.BuscarAsync(id);
+            //ComprobarId(id);
+            return UsuarioEF.BuscarAsync(id);
         }
+
+        
+        public static async Task<List<Usuario>> ListarAsync()
+            => await UsuarioEF.ListarAsync();
+
+
+        public static async Task<int> InsertarAsync(Usuario u)
+        {
+            ComprobarTexto(u.NombreUsuario, 20, true);
+            ComprobarTexto(u.PrimerApellido, 20, true);
+            ComprobarTexto(u.SegundoApellido, 20, false);
+            ComprobarTexto(u.Email, 255, true);
+            ComprobarTexto(u.Password, 50, true);
+
+            return await UsuarioEF.InsertarAsync(u);
+        }
+
+        public static async Task<bool> BorrarAsync(int id)
+        {
+            return await UsuarioEF.BorrarAsync(id);
+        }
+
+        private static void ComprobarTexto(string? texto, int maximo, bool obligatorio)
+        {
+            if (obligatorio && string.IsNullOrWhiteSpace(texto))
+                throw new ArgumentException("Falta un texto obligatorio.");
+            if (texto is not null && texto.Length > maximo)
+                throw new ArgumentException($"Un texto supera los {maximo} caracteres.");
+        }
+
+        
+       
+
+        /*
+
+
+
 
         private static void ComprobarId(int id)
         {
@@ -34,20 +68,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 $"Un texto supera los {maximo} caracteres.");
         }
 
-        public static async Task<int> InsertarAsync(Usuario e)
-        {
-            ComprobarTexto(e.NombreUsuario, 20, false);
-            ComprobarTexto(e.PrimerApellido, 20, true);
-            ComprobarTexto(e.SegundoApellido, 20, true);
-            ComprobarTexto(e.Email, 100, true);
-
-            return await UsuarioEF.InsertarAsync(e);
-        }
-
-        public static async Task<bool> BorrarAsync(int id)
-        {
-            ComprobarId(id);
-            return await UsuarioEF.BorrarAsync(id);
-        }
+        
+        */
     }
 }

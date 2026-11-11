@@ -13,7 +13,7 @@ public partial class Libro
 
     public short? NumeroPagina { get; set; }
 
-    public int FkmaterialPrestamo { get; set; }
+    public int FkmaterialBiblioteca { get; set; }
 
-    public virtual MaterialBiblioteca FkmaterialPrestamoNavigation { get; set; }
+    public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 }

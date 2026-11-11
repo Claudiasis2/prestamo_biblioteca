@@ -9,11 +9,11 @@ public partial class Prestamo
 {
     public int IdPrestamo { get; set; }
 
-    public DateTime? FechaSolicitada { get; set; }
+    public int? FksolicitudPrestamo { get; set; }
 
-    public DateOnly? FechaLimiteDevolucion { get; set; }
+    public DateOnly FechaLimiteDevolucion { get; set; }
 
-    public DateTime? FechaSalida { get; set; }
+    public DateTime FechaSalida { get; set; }
 
     public DateTime? FechaDevolucionReal { get; set; }
 
@@ -23,9 +23,15 @@ public partial class Prestamo
 
     public int Fkejemplar { get; set; }
 
-    public virtual ICollection<Ejemplar> Ejemplars { get; set; } = new List<Ejemplar>();
+    public int Fkestado { get; set; }
+
+    public virtual Ejemplar FkejemplarNavigation { get; set; }
 
     public virtual Empleado FkempleadoNavigation { get; set; }
+
+    public virtual Estado FkestadoNavigation { get; set; }
+
+    public virtual SolicitudPrestamo FksolicitudPrestamoNavigation { get; set; }
 
     public virtual Usuario FkusuarioNavigation { get; set; }
 }
