@@ -43,7 +43,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                         case "7": await GestionEmpleados.Menu(); break;
                         case "8": await GestionEstados.Menu(); break;
                         case "9": await GestionPrestamos.Menu(); break;
-                        case "10": await GestionSolicitudesPrestamos.Menu(); break;
+                        case "10": await GestionarSolicitudesPrestamos(); break;
                         case "11": await SolicitudMateriales(); break;
                         case "12": await RecepcionMateriales(); break;
                         default:
@@ -66,6 +66,14 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                     "No se pudieron guardar los cambios.");
                 }
             }
+        }
+        async static Task GestionarSolicitudesPrestamos()
+        {
+            //TODO: Implementar la lógica para gestionar las solicitudes de préstamos
+            Console.WriteLine("Gestión de solicitudes de préstamos");
+            Console.WriteLine("PENDIENTE DE IMPLEMENTAR");
+            Console.WriteLine("Pulsa una tecla para continuar...");
+            Console.ReadKey();
         }
 
         async static Task SolicitudMateriales()
