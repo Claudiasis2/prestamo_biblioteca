@@ -16,6 +16,7 @@ static class GestionUsuario
 {
     static async public void Menu()
     {
+        Console.Clear();
         while (true)
         {
 
