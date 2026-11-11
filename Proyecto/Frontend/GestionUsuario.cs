@@ -4,7 +4,9 @@ using ProyectoConjuntoMaterialPrestamo.Models;
 using ProyectoConjuntoMaterialPrestamo.Servicios;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.Design;
+using System.Data;
 using System.Globalization;
 using System.Text;
 
@@ -71,7 +73,8 @@ static class GestionUsuario
     async static Task InsertarUsuarioAsync()
     {
 
-
+        Console.Clear();
+        Console.WriteLine("ALTA DE USUARIOS");
         Console.WriteLine("Los datos con * son obligatorios.\n\n");
         var e = new Usuario
         {
@@ -83,29 +86,23 @@ static class GestionUsuario
             Password = LeerTexto("Inserta el password *: "),
             Activo = true
         };
-        if (e.SegundoApellido == "") e.SegundoApellido = null;
-
-
+        if (e.SegundoApellido == "") e.SegundoApellido = null;        
         int id = await UsuarioServicio.InsertarAsync(e);
-        Console.WriteLine($"Empleado creado con Id {id}");
+        Console.WriteLine("Usuario creado con éxito.\n");
+        var u = UsuarioEF.BuscarAsync(id);
+        Mostrar(u);
+        SalirPantalla();
     }
 
-    async static Task ListarUsuarioAsync()
+    static async Task ListarUsuarioAsync()
     {
         Console.Clear();
         Console.WriteLine("LISTADO DE USUARIOS");
         var lista = await UsuarioServicio.ListarAsync();
-        foreach (var fila in lista)
-        {
-            Console.WriteLine($"{fila.IdUsuario} {fila.NombreUsuario} {fila.PrimerApellido} {fila.SegundoApellido} {fila.Email}");
-        }
-        while (true)
-        {
-            Console.WriteLine("\n\nToca una tecla para continuar...");
-            Console.ReadLine();
-            Console.Clear();
-            break;
-        }
+        foreach (var u in lista)
+            Mostrar(u);
+
+        SalirPantalla();
     }
 
     async static Task ModificarUsuarioAsync()
@@ -124,27 +121,48 @@ static class GestionUsuario
 
         
 
-        var e = await UsuarioServicio.BuscarAsync(id);
-        /*if (e is null)
+        var u = await UsuarioServicio.BuscarAsync(id);
+        if (u is null)
         {
             Console.WriteLine("No existe ese Id.");
             return;
         }
-        Mostrar(e);*/
+        Mostrar(u);
         if (LeerTexto("¿Borrar este empleado? (S/N): ").ToUpperInvariant() != "S")
             return;
         bool borrado = await UsuarioServicio.BorrarAsync(id);
         Console.WriteLine(borrado ? "Empleado borrado." : "No se borró: ya no existe o tiene relaciones.");
-
+        SalirPantalla();
     }
 
-    async static Task BuscarUsuarioAsync()
+    public static async Task BuscarUsuarioAsync()
     {
         Console.Clear();
-        Console.WriteLine("BUSCAR DE USUARIOS");
+        Console.WriteLine("BUSCAR USUARIO");
+        if (!int.TryParse(LeerTexto("Introduce el Id a buscar: "), out int id))
+            throw new ArgumentException("Escribe un entero.");
+        //ComprobarId(id);
+        var u = UsuarioEF.BuscarAsync(id);
 
+        if (u is null)
+            Console.WriteLine("No existe ese Id.");
+        else
+            Mostrar(u);
+
+        SalirPantalla();
     }
-    
 
+    public static void Mostrar(Usuario u)
+    {
+        var estado = u.Activo ? "Activo" : "Desactivado";
+        Console.WriteLine($"{u.IdUsuario} | {u.Email} {u.NombreUsuario} {u.PrimerApellido} {u.SegundoApellido} {estado}");        
+        
+    }
 
+    public static void SalirPantalla()
+    {
+        Console.WriteLine("\nPulsa una tecla para continuar...");
+        Console.ReadKey();
+        Console.Clear();
+    }
 }

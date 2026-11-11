@@ -3,112 +3,98 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.Models;
 using System.Data;
 
-
-namespace ProyectoConjuntoMaterialPrestamo.EF
+public static class UsuarioEF
 {
-    public static class UsuarioEF
+
+
+    private static Usuario Convertir(Usuario fila)
     {
-
-
-
-        public static List<Usuario> ListarAsync()
+        return new Usuario
         {
-
-            try
-            {
-                using var db = ConexionEf.CrearContexto();
-                var filas = db.Usuarios
-                .OrderBy(f => f.Email).ToList();
-                return filas;
-            }
-            catch (SqlException ex)
-            {
-                throw new ArgumentException("Error al listar empleados por departamento.", ex);
-            }
-        }
-
-        public static async Task<Usuario?> BuscarAsync(int id)
-        {
-            try
-            {
-                await using var db = ConexionEf.CrearContexto();
-                /*var fila = await db.Usuarios
-                .SingleOrDefaultAsync(f => f.IdUsuario == id);*/
-
-                
-                var f = db.Usuarios;
-                var fila = f.SingleOrDefaultAsync(f => f.IdUsuario == id);
-                Console.WriteLine($"Usuario encontrado: {fila.Result?.NombreUsuario} {fila.Result?.PrimerApellido} {fila.Result?.SegundoApellido} {fila.Result?.Email}");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error accediendo a DB: {ex.Message}");
-                return null;
-            }
-        }
-
-
-
-        public static async Task<int> InsertarAsync(Usuario e)
-        {
-            try
-            {
-                using var db = ConexionEf.CrearContexto();
-                var fila = new Usuario
-                {
-                    Email = e.Email,
-                    NombreUsuario = e.NombreUsuario,
-                    PrimerApellido = e.PrimerApellido,
-                    SegundoApellido = e.SegundoApellido,
-                    Activo = e.Activo,
-                    Password = e.Password
-                };
-
-                db.Usuarios.Add(fila);
-                await db.SaveChangesAsync();
-                return fila.IdUsuario;
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine($"Error accediendo a DB: {ex.Message}");
-                return 0;
-            }
-
-        }
-
-        public static async Task<bool> BorrarAsync(int id)
-        {
-            try
-            {
-                await using var db = ConexionEf.CrearContexto();
-                var fila = db.Usuarios.SingleOrDefault(
-                f => f.IdUsuario == id);
-                if (fila is null) return false;
-                db.Usuarios.Remove(fila);
-                await db.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error accediendo a DB: {ex.Message}");
-                return false;
-            }
-
-        }
-
-        public static async Task<Usuario> Convertir(Usuario fila)
-        {
-            return new Usuario
-            {
-                IdUsuario = fila.IdUsuario,
-                NombreUsuario = fila.NombreUsuario,
-                PrimerApellido = fila.PrimerApellido,
-                SegundoApellido = fila.SegundoApellido,
-                Email = fila.Email,
-                Activo = fila.Activo
-            };
-        }
-
+            IdUsuario = fila.IdUsuario,
+            NombreUsuario = fila.NombreUsuario,
+            PrimerApellido = fila.PrimerApellido,
+            SegundoApellido = fila.SegundoApellido,
+            Email = fila.Email,
+            Activo = fila.Activo
+        };
     }
+
+    public static Usuario? BuscarAsync(int id)
+    {
+        try
+        {
+            using var db = ConexionEf.CrearContexto();
+            var fila = db.Usuarios
+            .SingleOrDefault(u => u.IdUsuario == id);
+            return fila is null ? null : Convertir(fila);
+        }
+        catch (SqlException ex)
+        {
+            throw new ArgumentException("Error al buscar usuario.", ex);
+        }
+    }
+
+    public static async Task<List<Usuario>> ListarAsync()
+    {
+        using var db = ConexionEf.CrearContexto();
+        var filas = db.Usuarios
+        .OrderBy(u => u.IdUsuario).ToList();
+        return filas.Select(fila => Convertir(fila))
+        .ToList();
+    }
+
+
+    public static async Task<int> InsertarAsync(Usuario u)
+    {
+        try
+        {
+            using var db = ConexionEf.CrearContexto();
+            var fila = new Usuario
+            {
+                Email = u.Email,
+                NombreUsuario = u.NombreUsuario,
+                PrimerApellido = u.PrimerApellido,
+                SegundoApellido = u.SegundoApellido,
+                Activo = u.Activo,
+                Password = u.Password
+            };
+            db.Usuarios.Add(fila);
+            db.SaveChanges();
+            return fila.IdUsuario;
+        }
+        catch (SqlException ex)
+        {
+            throw new ArgumentException("Error al insertar usuario.", ex);
+        }
+    }
+
+    public static async Task<bool> BorrarAsync(int id)
+    {
+        try
+        {
+            using var db = ConexionEf.CrearContexto();
+            var fila = db.Usuarios.SingleOrDefault(f => f.IdUsuario == id);
+
+            db.Usuarios.All(f => f.IdUsuario != id);
+            if (fila is null)
+                return false;
+            bool tienePrestamo = db.Prestamos
+            .Any(p => p.Fkusuario == id);
+            if (tienePrestamo)
+                return false;
+            bool tieneSolicitud = db.SolicitudPrestamos
+            .Any(s => s.Fkusuario == id);
+            if (tieneSolicitud)
+                return false;
+            db.Usuarios.Remove(fila);
+            db.SaveChanges();
+            return true;
+        }
+        catch (SqlException ex)
+        {
+            throw new ArgumentException("Error al eliminar el registro.", ex);
+        }
+    }
+
 }
