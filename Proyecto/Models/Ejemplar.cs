@@ -9,17 +9,15 @@ public partial class Ejemplar
 {
     public int IdEjemplar { get; set; }
 
-    public string CodigoInventario { get; set; }
-
     public string UbicacionEstanteria { get; set; }
 
-    public int FkmaterialPrestamo { get; set; }
+    public int FkmaterialBiblioteca { get; set; }
 
     public int Fkestado { get; set; }
 
     public virtual Estado FkestadoNavigation { get; set; }
 
-    public virtual Prestamo FkmaterialPrestamo1 { get; set; }
+    public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 
-    public virtual MaterialBiblioteca FkmaterialPrestamoNavigation { get; set; }
+    public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
 }

@@ -2,6 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+<<<<<<< HEAD
 /.vs/prestamo_biblioteca/FileContentIndex
 /.vs/prestamo_biblioteca/v18
 /.vs/slnx.sqlite
@@ -9,3 +10,22 @@
 /Proyecto/.vs
 /Proyecto/obj/Debug/net10.0
 /Proyecto/obj
+=======
+/.vs
+/Proyecto/.vs
+/Proyecto/bin/Debug/net10.0
+/Proyecto/obj
+
+# Visual Studio
+.vs/
+
+# Archivos generados por .NET
+[Bb]in/
+[Oo]bj/
+
+# Configuración local
+*.user
+*.suo
+*.cache
+>>>>>>> 6fa1444647a627f6641a615cc1966a7623f02ae7
+/Proyecto/.vs/ProyectoConjuntoMaterialPrestamo/CopilotIndices/18.10.1207.43936/SemanticSymbols.db
