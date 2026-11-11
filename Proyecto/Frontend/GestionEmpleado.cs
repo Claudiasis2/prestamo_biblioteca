@@ -7,9 +7,9 @@ static class GestionEmpleado
 {
     static async public void Menu()
     {
+        Console.Clear();
         while (true)
         {
-
             Console.WriteLine("GESTION DE EMPLEADO");
             Console.WriteLine("1 Listar");
             Console.WriteLine("2 Buscar");

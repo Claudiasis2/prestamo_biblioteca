@@ -9,8 +9,6 @@ class Program
     {
         try
         {
-            //GestionUsuario.Menu();
-            //GestionEmpleado.Menu();
             await MenuPrincipal.Menu();
         }
         catch (ArgumentException ex)
