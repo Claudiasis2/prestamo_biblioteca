@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<RootNamespace>ProyectoConjuntoMaterialPrestamo</RootNamespace>
+	<StartupObject>Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

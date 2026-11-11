@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using ProyectoConjuntoMaterialPrestamo.Frontend;
 using ProyectoConjuntoMaterialPrestamo.Models;
 
 class Program
@@ -9,7 +10,8 @@ class Program
         try
         {
             //GestionUsuario.Menu();
-            GestionEmpleado.Menu();
+            //GestionEmpleado.Menu();
+            await MenuPrincipal.Menu();
         }
         catch (ArgumentException ex)
         {
