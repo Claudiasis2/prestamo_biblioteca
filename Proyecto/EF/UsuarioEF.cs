@@ -20,14 +20,35 @@ public static class UsuarioEF
         };
     }
 
-    public static Usuario? BuscarAsync(int id)
+    public static async Task<List<Usuario>> BuscarAsync(int id = 0, string email = "", string nombre = "")
     {
         try
         {
+
             using var db = ConexionEf.CrearContexto();
-            var fila = db.Usuarios
-            .SingleOrDefault(u => u.IdUsuario == id);
-            return fila is null ? null : Convertir(fila);
+            var query = db.Usuarios.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(nombre))
+            {
+                query = query.Where(u =>
+                    u.NombreUsuario.Contains(nombre) ||
+                    u.PrimerApellido.Contains(nombre) ||
+                    u.SegundoApellido.Contains(nombre));
+            }
+
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                query = query.Where(u => u.Email.Contains(email));
+            }
+
+            if (id > 0)
+            {
+                query = query.Where(u => u.IdUsuario == id);
+            }
+
+            var filas = query.ToList();
+
+            return filas.Select(fila => Convertir(fila)).ToList();
         }
         catch (SqlException ex)
         {
@@ -62,6 +83,32 @@ public static class UsuarioEF
             db.Usuarios.Add(fila);
             db.SaveChanges();
             return fila.IdUsuario;
+        }
+        catch (SqlException ex)
+        {
+            throw new ArgumentException("Error al insertar usuario.", ex);
+        }
+    }
+
+    public static async Task<bool> ModificarAsync(Usuario u)
+    {
+        try
+        {
+
+            using var db = ConexionEf.CrearContexto();
+            var fila = db.Usuarios.SingleOrDefault(q => q.IdUsuario == u.IdUsuario);
+            if (fila is null)
+                return false;
+            if (u.Email != null && u.Email != "")
+                fila.Email = u.Email;
+            if (u.NombreUsuario != null && u.NombreUsuario != "")
+                fila.NombreUsuario = u.NombreUsuario;
+            if (u.PrimerApellido != null && u.PrimerApellido != "")
+                fila.PrimerApellido = u.PrimerApellido;
+            fila.SegundoApellido = u.SegundoApellido;
+            db.SaveChanges();
+            return true;
+
         }
         catch (SqlException ex)
         {
