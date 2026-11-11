@@ -8,13 +8,12 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
     public static class UsuarioServicio
     {
 
-        public static async Task<Usuario?> BuscarAsync(int id)
+        public static async Task<List<Usuario>> BuscarAsync(int id = 0, string email = "", string nombre = "")
         {
-            //ComprobarId(id);
-            return UsuarioEF.BuscarAsync(id);
+            return await UsuarioEF.BuscarAsync(id, email, nombre);
         }
 
-        
+
         public static async Task<List<Usuario>> ListarAsync()
             => await UsuarioEF.ListarAsync();
 
@@ -35,6 +34,13 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             return await UsuarioEF.BorrarAsync(id);
         }
 
+        public static async Task<bool> ModificarAsync(Usuario u)
+        {
+            return await UsuarioEF.ModificarAsync(u);
+        }
+
+
+
         private static void ComprobarTexto(string? texto, int maximo, bool obligatorio)
         {
             if (obligatorio && string.IsNullOrWhiteSpace(texto))
@@ -43,32 +49,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 throw new ArgumentException($"Un texto supera los {maximo} caracteres.");
         }
 
-        
-       
-
-        /*
 
 
 
 
-        private static void ComprobarId(int id)
-        {
-            if (id <= 0)
-                throw new ArgumentException(
-                "El identificador debe ser positivo.");
-        }
-
-        private static void ComprobarTexto(string? texto, int maximo, bool obligatorio)
-        {
-            if (obligatorio && string.IsNullOrWhiteSpace(texto))
-                throw new ArgumentException(
-                "Falta un texto obligatorio.");
-            if (texto is not null && texto.Length > maximo)
-                throw new ArgumentException(
-                $"Un texto supera los {maximo} caracteres.");
-        }
-
-        
-        */
     }
 }
