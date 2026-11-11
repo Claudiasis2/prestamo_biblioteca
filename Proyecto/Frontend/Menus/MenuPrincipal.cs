@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProyectoConjuntoMaterialPrestamo.Frontend
+namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
     internal class MenuPrincipal
     {

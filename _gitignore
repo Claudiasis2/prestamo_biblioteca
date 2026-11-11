@@ -1,0 +1,23 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Proyecto/.vs
+/Proyecto/bin/Debug/net10.0
+/Proyecto/obj
+
+# Visual Studio
+.vs/
+
+# Archivos generados por .NET
+[Bb]in/
+[Oo]bj/
+
+# Configuración local
+*.user
+*.suo
+*.cache
+/Proyecto/.vs/ProyectoConjuntoMaterialPrestamo.slnx/v18/.futdcache.v2
+/Proyecto/.vs/ProyectoConjuntoMaterialPrestamo.slnx/v18/.suo
+/Proyecto/.vs/ProyectoConjuntoMaterialPrestamo.slnx/v18/DocumentLayout.backup.json
