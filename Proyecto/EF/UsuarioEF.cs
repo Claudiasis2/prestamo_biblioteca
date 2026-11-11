@@ -105,7 +105,8 @@ public static class UsuarioEF
                 fila.NombreUsuario = u.NombreUsuario;
             if (u.PrimerApellido != null && u.PrimerApellido != "")
                 fila.PrimerApellido = u.PrimerApellido;
-            fila.SegundoApellido = u.SegundoApellido;
+            if (u.PrimerApellido != null && u.PrimerApellido != "")
+                fila.SegundoApellido = u.SegundoApellido;
             db.SaveChanges();
             return true;
 

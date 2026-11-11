@@ -114,7 +114,7 @@ static class GestionUsuario
     async static Task ModificarUsuarioAsync()
     {
         Console.Clear();
-        Console.WriteLine("MODIFICAR DE USUARIOS");
+        Console.WriteLine("MODIFICAR DATOS USUARIO");
         var (email, nombre) = FormularioBusqueda();
         var listaUsuarios = await UsuarioServicio.BuscarAsync(0, email, nombre);
         if (listaUsuarios is null || listaUsuarios.Count == 0)
@@ -144,7 +144,7 @@ static class GestionUsuario
     async static Task BorrarUsuarioAsync()
     {
         Console.Clear();
-        Console.WriteLine("BORRAR DE USUARIOS");
+        Console.WriteLine("BORRAR USUARIO");
         var lista = await UsuarioServicio.ListarAsync();
         foreach (var l in lista)
             Mostrar(l);
@@ -174,7 +174,7 @@ static class GestionUsuario
         var (email, nombre) = FormularioBusqueda();
         var listaUsuarios = await UsuarioServicio.BuscarAsync(0, email, nombre);
 
-        if (listaUsuarios is null)
+        if (listaUsuarios is null || !listaUsuarios.Any())
             Console.WriteLine("No se han encontrado coincidencias.");
         else
             foreach (var u in listaUsuarios)
@@ -210,7 +210,7 @@ static class GestionUsuario
     public static Usuario FormularioCambios(Usuario u)
     {
         Console.Clear();
-        Console.WriteLine("FORMULARIO DE CAMBIOS");
+        Console.WriteLine("DATOS USUARIO");
         Console.WriteLine("Los datos con * son obligatorios.\n\n");
         var e = new Usuario
         {

@@ -8,15 +8,8 @@ class Program
     {
         try
         {
-            /*
-            using var db = ConexionEf.CrearContexto();
-            var filas = await db.Usuarios.ToListAsync<Usuario>();
-            foreach (var fila in filas)
-            {
-                Console.WriteLine($"{fila.IdUsuario} {fila.NombreUsuario} {fila.PrimerApellido} {fila.SegundoApellido} {fila.Email}");
-            }*/
-            
-            GestionUsuario.Menu();
+            //GestionUsuario.Menu();
+            GestionEmpleado.Menu();
         }
         catch (ArgumentException ex)
         {
