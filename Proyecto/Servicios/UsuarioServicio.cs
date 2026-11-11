@@ -18,28 +18,10 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             => await UsuarioEF.ListarAsync();
 
 
-        public static async Task<int> InsertarAsync(Usuario u)
-        {
-            ComprobarTexto(u.NombreUsuario, 20, true);
-            ComprobarTexto(u.PrimerApellido, 20, true);
-            ComprobarTexto(u.SegundoApellido, 20, false);
-            ComprobarTexto(u.Email, 255, true);
-            ComprobarTexto(u.Password, 50, true);
-
-            return await UsuarioEF.InsertarAsync(u);
-        }
-
         public static async Task<bool> BorrarAsync(int id)
         {
             return await UsuarioEF.BorrarAsync(id);
         }
-
-        public static async Task<bool> ModificarAsync(Usuario u)
-        {
-            return await UsuarioEF.ModificarAsync(u);
-        }
-
-
 
         private static void ComprobarTexto(string? texto, int maximo, bool obligatorio)
         {
@@ -56,9 +38,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             return await UsuarioEF.InsertarAsync(e);
         }
 
-        public static async Task<int> ModificarAsync(Usuario e)
+        public static async Task<bool> ModificarAsync(Usuario e)
         {
-            Usuario? usr = await BuscarAsync(e.IdUsuario);
+            List<Usuario>? usr = await BuscarAsync(e.IdUsuario);
 
             if (usr is null)
             {
