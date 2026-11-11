@@ -118,5 +118,60 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             };
         }
 
+        public class MaterialConTipo
+        {
+            public int IdMaterial { get; set; }
+            public string Titulo { get; set; } = string.Empty;
+            public int? AnioPublicacion { get; set; }
+            public string Tipo { get; set; } = string.Empty;
+        }
+
+        public static async Task<List<MaterialConTipo>> ListarDisponiblesConTipoAsync()
+        {
+            await using var db = ConexionEf.CrearContexto();
+
+            var materiales = await db.MaterialBibliotecas
+                .Include(m => m.Ejemplars)
+                .Where(m => m.Ejemplars.Any(e => e.Fkestado == 1))
+                .OrderBy(m => m.IdMaterial)
+                .ToListAsync();
+
+            var idsLibros = await db.Libros.Select(l => l.FkmaterialBiblioteca).ToListAsync(); 
+            var idsCds = await db.Cds.Select(c => c.FkmaterialBiblioteca).ToListAsync(); 
+            var idsDvds = await db.Dvds.Select(d => d.FkmaterialBiblioteca).ToListAsync();
+
+            var resultado = new List<MaterialConTipo>();
+
+            foreach (var m in materiales)
+            {
+                string tipo = "Material";
+                if (idsLibros.Contains(m.IdMaterial)) tipo = "Libro"; 
+                else if (idsCds.Contains(m.IdMaterial)) tipo = "CD"; 
+                else if (idsDvds.Contains(m.IdMaterial)) tipo = "DVD";
+
+                resultado.Add(new MaterialConTipo
+                {
+                    IdMaterial = m.IdMaterial,
+                    Titulo = m.Titulo,
+                    AnioPublicacion = m.AnioPublicacion,
+                    Tipo = tipo
+                });
+            }
+
+            return resultado;
+        }
     }
+
 }
+ 
+    
+
+
+
+
+
+
+
+
+
+

@@ -66,5 +66,10 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             ComprobarId(id);
             return await MaterialBibliotecaEF.BorrarAsync(id);
         }
+
+        public static async Task<List<MaterialBibliotecaEF.MaterialConTipo>> ListarDisponiblesConTipoAsync()
+        {
+            return await MaterialBibliotecaEF.ListarDisponiblesConTipoAsync();
+        }
     }
 }

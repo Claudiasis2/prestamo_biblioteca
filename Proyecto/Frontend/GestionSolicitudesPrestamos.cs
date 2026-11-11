@@ -81,7 +81,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
             Console.WriteLine($"Tiene {cupoDisponible} cupo(s) disponible(s).\n");
 
-            var materiales = await MaterialBibliotecaServicio.ListarAsync();
+            var materiales = await MaterialBibliotecaServicio.ListarDisponiblesConTipoAsync();
             if (!materiales.Any())
             {
                 Console.WriteLine("[AVISO] No hay materiales registrados en la biblioteca.");
@@ -93,7 +93,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             Console.WriteLine("--------------------------------------------------");
             foreach (var mat in materiales)
             {
-                Console.WriteLine($"ID: {mat.IdMaterial,-4} | Título: {mat.Titulo} ({mat.AnioPublicacion})");
+                Console.WriteLine($" {mat.IdMaterial,-4} | {mat.Titulo,-30} | ({mat.Tipo})");
             }
             Console.WriteLine("--------------------------------------------------");
 
