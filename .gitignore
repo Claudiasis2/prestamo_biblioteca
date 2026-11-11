@@ -1,0 +1,12 @@
+
+# Visual Studio
+.vs/
+
+# Archivos generados por .NET
+[Bb]in/
+[Oo]bj/
+
+# Configuración local
+*.user
+*.suo
+*.cache
