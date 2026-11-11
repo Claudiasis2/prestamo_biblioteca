@@ -17,7 +17,9 @@ public partial class Usuario
 
     public string SegundoApellido { get; set; }
 
-    public bool? Activo { get; set; }
+    public bool Activo { get; set; }
+
+    public string Password { get; set; }
 
     public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoConjuntoMaterialPrestamo;
 using ProyectoConjuntoMaterialPrestamo.Models;
 public static class ConexionEf
 {

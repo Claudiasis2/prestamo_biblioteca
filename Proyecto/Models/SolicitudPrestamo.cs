@@ -11,7 +11,7 @@ public partial class SolicitudPrestamo
 
     public DateTime? FechaSolicitud { get; set; }
 
-    public int FkmaterialPrestamo { get; set; }
+    public int FkmaterialBiblioteca { get; set; }
 
     public int Fkusuario { get; set; }
 
@@ -19,7 +19,9 @@ public partial class SolicitudPrestamo
 
     public virtual Estado FkestadoNavigation { get; set; }
 
-    public virtual MaterialBiblioteca FkmaterialPrestamoNavigation { get; set; }
+    public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 
     public virtual Usuario FkusuarioNavigation { get; set; }
+
+    public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
 }
