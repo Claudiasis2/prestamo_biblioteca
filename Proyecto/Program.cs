@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using ProyectoConjuntoMaterialPrestamo.Frontend;
+using ProyectoConjuntoMaterialPrestamo.Frontend.Menus;
 using ProyectoConjuntoMaterialPrestamo.Models;
 
 class Program
