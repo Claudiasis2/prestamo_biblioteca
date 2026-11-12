@@ -98,5 +98,56 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 throw new ArgumentException("El identificador del usuario debe ser un entero positivo.");
             }
         }
+
+        public static async Task<List<SolicitudPrestamo>> ListarPendientesAsync()
+        {
+            return await SolicitudPrestamoEF.ListarPendientesAsync();
+        }
+
+        public static async Task AprobarSolicitudAsync(int idSolicitud)
+        {
+            if (idSolicitud <= 0)
+            {
+                throw new ArgumentException("El identificador de la solicitud debe ser un entero positivo.");
+            }
+
+            var solicitud = await SolicitudPrestamoEF.BuscarPorIdAsync(idSolicitud);
+            if (solicitud is null)
+            {
+                throw new ArgumentException($"No existe ninguna solicitud registrada con el ID {idSolicitud}.");
+            }
+
+            if (solicitud.Fkestado != 4)
+            {
+                throw new ArgumentException($"La solicitud #{idSolicitud} no se encuentra en estado Pendiente. Estado actual: {solicitud.FkestadoNavigation?.NombreEstado ?? solicitud.Fkestado.ToString()}.");
+            }
+
+            await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 5);
+        }
+
+        public static async Task RechazarSolicitudAsync(int idSolicitud)
+        {
+            if (idSolicitud <= 0)
+            {
+                throw new ArgumentException("El identificador de la solicitud debe ser un entero positivo.");
+            }
+
+            var solicitud = await SolicitudPrestamoEF.BuscarPorIdAsync(idSolicitud);
+            if (solicitud is null)
+            {
+                throw new ArgumentException($"No existe ninguna solicitud registrada con el ID {idSolicitud}.");
+            }
+
+            if (solicitud.Fkestado != 4)
+            {
+                throw new ArgumentException($"La solicitud #{idSolicitud} no se encuentra en estado Pendiente. Estado actual: {solicitud.FkestadoNavigation?.NombreEstado ?? solicitud.Fkestado.ToString()}.");
+            }
+
+            await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 6);
+        }
     }
 }
+
+
+
+

@@ -80,5 +80,47 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 				.OrderByDescending(s => s.IdSolicitud)
 				.ToListAsync();
 		}
-	}
+
+        public static async Task<List<SolicitudPrestamo>> ListarPendientesAsync()
+        {
+            await using var db = ConexionEf.CrearContexto();
+
+            return await db.SolicitudPrestamos
+                .Include(s => s.FkusuarioNavigation)
+                        .Include(s => s.FkmaterialBibliotecaNavigation)
+                        .Include(s => s.FkestadoNavigation)
+                        .Where(s => s.Fkestado == 4)
+                        .OrderBy(s => s.IdSolicitud)
+                        .ToListAsync();
+        }
+
+        public static async Task<SolicitudPrestamo?> BuscarPorIdAsync(int idSolicitud)
+        {
+            await using var db = ConexionEf.CrearContexto();
+
+            return await db.SolicitudPrestamos
+                .Include(s => s.FkusuarioNavigation)
+                        .Include(s => s.FkmaterialBibliotecaNavigation)
+                        .Include(s => s.FkestadoNavigation)
+                        .FirstOrDefaultAsync(s => s.IdSolicitud == idSolicitud);
+        }
+
+        public static async Task<bool> CambiarEstadoAsync(int idSolicitud, int nuevoEstado)
+        {
+            await using var db = ConexionEf.CrearContexto();
+
+            var solicitud = await db.SolicitudPrestamos.FindAsync(idSolicitud);
+            if (solicitud is null) return false;
+
+            solicitud.Fkestado = nuevoEstado;
+            await db.SaveChangesAsync();
+            return true;
+        }
+    }
 }
+
+
+
+
+
+
