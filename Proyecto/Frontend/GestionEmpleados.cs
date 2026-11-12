@@ -66,7 +66,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
         }
 
-        async static Task BorrarEmpleadoAsync()
+        public async static Task BorrarEmpleadoAsync()
         {
             Console.Clear();
             Console.WriteLine("BORRAR EMPLEADO");
@@ -98,7 +98,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             return Console.ReadLine()?.Trim() ?? "";
         }
 
-        async static Task InsertarEmpleadoAsync()
+        public async static Task InsertarEmpleadoAsync()
         {
 
             Console.Clear();
@@ -123,7 +123,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             SalirPantalla();
         }
 
-        static async Task ListarEmpleadoAsync()
+        public static async Task ListarEmpleadoAsync()
         {
             Console.Clear();
             Console.WriteLine("LISTADO DE EMPLEADOS");
@@ -150,7 +150,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             SalirPantalla();
         }
 
-        async static Task ModificarEmpleadoAsync()
+        public async static Task ModificarEmpleadoAsync()
         {
             Console.Clear();
             Console.WriteLine("MODIFICAR DATOS EMPLEADO");
