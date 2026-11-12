@@ -67,7 +67,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
         }
         static int LeerId()
         {
-            if (!int.TryParse(LeerTexto("Id Material: "), out int id))
+            if (!int.TryParse(LeerTexto("Id Préstamo: "), out int id))
                 throw new ArgumentException("Escribe un entero.");
             return id;
         }
@@ -75,18 +75,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
         async static Task ListarAsync()
         {
             var Prestamos = await PrestamoServicio.ListarAsync();
-            foreach (var e in Prestamos) Mostrar(e);
-
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
-
-        }
-        async static Task ListarArtistaAsync()
-        {
-            var artista = LeerTexto("Artista: ");
-
-            var Prestamos = await PrestamoServicio.ListarAsync();
-            Prestamos = Prestamos.Where(c => c.NombreArtista.Contains(artista)).ToList();
             foreach (var e in Prestamos) Mostrar(e);
 
             Console.WriteLine("Pulsa una tecla para continuar...");
@@ -114,9 +102,14 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
         {
             var e = new Prestamo
             {
-                FkmaterialBiblioteca = LeerId(),
-                NombreArtista = LeerTexto("Artista: "),
-                DuracionMinutos = (short)(int.TryParse(LeerTexto("Duración (minutos): "), out int duracion) ? duracion : 0)
+                FechaSalida = DateTime.Parse(LeerTexto("Fecha de salida (yyyy-MM-dd): ")),
+                FechaLimiteDevolucion = DateOnly.Parse(LeerTexto("Fecha de devolución (yyyy-MM-dd): ")),
+                FechaDevolucionReal = DateTime.Parse(LeerTexto("Fecha de devolución real (yyyy-MM-dd): ")),
+                Fkejemplar = int.Parse(LeerTexto("Id del ejemplar: ")),
+                FksolicitudPrestamo = int.Parse(LeerTexto("Id de la solicitud de préstamo: ")),
+                Fkempleado = int.Parse(LeerTexto("Id del empleado: ")),
+                Fkusuario = int.Parse(LeerTexto("Id del usuario: ")),
+                Fkestado = int.Parse(LeerTexto("Id del estado: ")),
             };
 
             int id = await PrestamoServicio.InsertarAsync(e);
@@ -139,8 +132,13 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
             Mostrar(e);
 
-            e.NombreArtista = LeerTexto("Nuevo Artista: ");
-            e.DuracionMinutos = (short)(int.TryParse(LeerTexto("Nueva Duración (minutos): "), out int duracion) ? duracion : 0);
+            e.FechaSalida = DateTime.Parse(LeerTexto("Nueva fecha de salida (yyyy-MM-dd): "));
+            e.FechaLimiteDevolucion = DateOnly.Parse(LeerTexto("Nueva fecha de devolución (yyyy-MM-dd): "));
+            e.FechaDevolucionReal = DateTime.Parse(LeerTexto("Nueva fecha de devolución real (yyyy-MM-dd): "));
+            e.Fkejemplar = int.Parse(LeerTexto("Nuevo Id del ejemplar: "));
+            e.Fkempleado = int.Parse(LeerTexto("Nuevo Id del empleado: "));
+            e.Fkusuario = int.Parse(LeerTexto("Nuevo Id del usuario: "));
+            e.Fkestado = int.Parse(LeerTexto("Nuevo Id del estado: "));
 
             int id = await PrestamoServicio.ModificarAsync(e);
             Console.WriteLine($"Prestamo Id {id} modificado.");
@@ -163,7 +161,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 return;
             }
             Mostrar(e);
-            if (LeerTexto("¿Borrar este Material de Biblioteca? (S/N): ")
+            if (LeerTexto("¿Borrar este Prestamo? (S/N): ")
             .ToUpperInvariant() != "S") return;
 
             bool borrado = await PrestamoServicio.BorrarAsync(id);

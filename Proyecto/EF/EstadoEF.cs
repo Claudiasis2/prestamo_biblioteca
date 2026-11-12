@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProyectoConjuntoMaterialEstado.EF
+namespace ProyectoConjuntoMaterialPrestamo.EF
 {
     internal class EstadoEF
     {
