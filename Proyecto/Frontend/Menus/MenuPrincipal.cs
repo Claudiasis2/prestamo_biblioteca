@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ProyectoConjuntoMaterialPrestamo.Frontend;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
@@ -17,6 +18,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                 Console.WriteLine("2. Menú Administrador");
                 Console.WriteLine("3. Menú Usuario");
                 Console.WriteLine("4. Loggin");
+                Console.WriteLine("5. Menú Usuario (Solicitudes)");
                 Console.WriteLine("0. SALIR");
                 string opcion = LeerTexto("Opción: ");
                 if (opcion == "0") break;
@@ -28,6 +30,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                         case "2": await MenuAdministrador.Menu(); break;
                         case "3": GestionUsuario.Menu(); break;
                         case "4": GestionLogin.Login(); break;
+                        case "5": await GestionSolicitudesPrestamos.Menu(24); break;
                         default:
                             Console.WriteLine("Opción no válida.");
                             break;

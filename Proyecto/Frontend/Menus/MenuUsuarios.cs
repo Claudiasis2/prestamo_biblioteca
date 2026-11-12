@@ -6,13 +6,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
     internal class MenuUsuarios
     {
-        static async public Task Menu()
-        {
-            Console.WriteLine("MENU DE USUARIOS");
-            Console.WriteLine("Pendiente de implementar...");
-
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+        public static async Task Menu(int idUsuario) 
+        { 
+            await GestionSolicitudesPrestamos.Menu(idUsuario); 
         }
     }
 }
