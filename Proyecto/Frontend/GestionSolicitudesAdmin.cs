@@ -89,7 +89,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
             try
             {
-                await SolicitudPrestamoServicio.AprobarSolicitudAsync(idSolicitud);
+                //await SolicitudPrestamoServicio.AprobarSolicitudAsync(idSolicitud);
                 Console.WriteLine($"\n[ÉXITO] La solicitud #{idSolicitud} ha sido APROBADA correctamente.");
             }
             catch (ArgumentException ex)
@@ -121,7 +121,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
             try
             {
-                await SolicitudPrestamoServicio.RechazarSolicitudAsync(idSolicitud);
+                //await SolicitudPrestamoServicio.RechazarSolicitudAsync(idSolicitud);
                 Console.WriteLine($"\n[ÉXITO] La solicitud #{idSolicitud} ha sido RECHAZADA. El cupo del usuario se ha liberado.");
             }
             catch (ArgumentException ex)

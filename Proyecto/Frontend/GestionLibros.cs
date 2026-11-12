@@ -11,7 +11,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     internal class GestionLibros
     {
-        static async public Task Menu()
+        /*static async public Task Menu()
         {
             while (true)
             {
@@ -175,7 +175,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             : "No se borró: ya no existe o tiene relaciones.");
             Console.WriteLine("Pulsa una tecla para continuar...");
             Console.ReadKey();
-        }
+        }*/
 
     }
 }

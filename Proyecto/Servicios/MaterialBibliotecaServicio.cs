@@ -67,9 +67,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             return await MaterialBibliotecaEF.BorrarAsync(id);
         }
 
-        public static async Task<List<MaterialBibliotecaEF.MaterialConTipo>> ListarDisponiblesConTipoAsync()
+        /*public static async Task<List<MaterialBibliotecaEF.MaterialConTipo>> ListarDisponiblesConTipoAsync()
         {
             return await MaterialBibliotecaEF.ListarDisponiblesConTipoAsync();
-        }
+        }*/
     }
 }

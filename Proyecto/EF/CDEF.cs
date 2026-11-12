@@ -8,7 +8,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 {
     internal class CDEF
     {
-        public static async Task<List<Cd>> ListarAsync()
+        /*public static async Task<List<Cd>> ListarAsync()
         {
             try
             {
@@ -115,7 +115,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 DuracionMinutos = fila.DuracionMinutos,
                 NombreArtista = fila.NombreArtista
             };
-        }
+        }*/
 
     }
 }

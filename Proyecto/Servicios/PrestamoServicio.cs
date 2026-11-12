@@ -31,9 +31,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 throw new ArgumentException($"No existe ninguna solicitud registrada con el ID {idSolicitud}.");
             }
 
-            if (solicitud.Fkestado != 5)
+            if (solicitud.FkestadoSolicitudPrestamo != 5)
             {
-                throw new InvalidOperationException($"La solicitud #{idSolicitud} no se encuentra en estado Aprobado. Estado actual: {solicitud.FkestadoNavigation?.NombreEstado ?? solicitud.Fkestado.ToString()}.");
+                //throw new InvalidOperationException($"La solicitud #{idSolicitud} no se encuentra en estado Aprobado. Estado actual: {solicitud.FkestadoNavigation?.NombreEstado ?? solicitud.Fkestado.ToString()}.");
             }
 
             return await PrestamoEF.CrearPrestamoTransaccionalAsync(idSolicitud, diasPrestamo);

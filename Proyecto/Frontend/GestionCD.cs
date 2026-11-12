@@ -11,6 +11,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     internal class GestionCD
     {
+        /*
         static async public Task Menu()
         {
             while (true)
@@ -52,6 +53,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 }
             }
         }
+        
         static void Mostrar(Cd e)
         {
             Console.WriteLine($"Id Material: {e.FkmaterialBiblioteca}");
@@ -59,6 +61,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             Console.WriteLine($"Duración: {e.DuracionMinutos}'");
             Console.WriteLine("==============================");
         }
+        
 
         static string LeerTexto(string mensaje)
         {
@@ -104,7 +107,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 Console.WriteLine("Pulsa una tecla para continuar...");
                 Console.ReadKey();
             }
-            else Mostrar(e);
+            else //Mostrar(e);
 
             Console.WriteLine("Pulsa una tecla para continuar...");
             Console.ReadKey();
@@ -172,7 +175,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             : "No se borró: ya no existe o tiene relaciones.");
             Console.WriteLine("Pulsa una tecla para continuar...");
             Console.ReadKey();
-        }
+        }*/
 
     }
 }

@@ -126,7 +126,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             public string Tipo { get; set; } = string.Empty;
         }
 
-        public static async Task<List<MaterialConTipo>> ListarDisponiblesConTipoAsync()
+        /*public static async Task<List<MaterialConTipo>> ListarDisponiblesConTipoAsync()
         {
             await using var db = ConexionEf.CrearContexto();
 
@@ -159,7 +159,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             }
 
             return resultado;
-        }
+        }*/
     }
 
 }

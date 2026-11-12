@@ -104,7 +104,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             return await SolicitudPrestamoEF.ListarPendientesAsync();
         }
 
-        public static async Task AprobarSolicitudAsync(int idSolicitud)
+        /*public static async Task AprobarSolicitudAsync(int idSolicitud)
         {
             if (idSolicitud <= 0)
             {
@@ -123,9 +123,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             }
 
             await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 5);
-        }
+        }*/
 
-        public static async Task RechazarSolicitudAsync(int idSolicitud)
+        /*public static async Task RechazarSolicitudAsync(int idSolicitud)
         {
             if (idSolicitud <= 0)
             {
@@ -144,7 +144,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
             }
 
             await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 6);
-        }
+        }*/
     }
 }
 

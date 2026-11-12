@@ -15,8 +15,6 @@ public partial class Ejemplar
 
     public int Fkestado { get; set; }
 
-    public virtual Estado FkestadoNavigation { get; set; }
-
     public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 
     public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();

@@ -23,15 +23,11 @@ public partial class Prestamo
 
     public int Fkejemplar { get; set; }
 
-    public int Fkestado { get; set; }
+    public int FkestadoPrestamo { get; set; }
 
     public virtual Ejemplar FkejemplarNavigation { get; set; }
 
     public virtual Empleado FkempleadoNavigation { get; set; }
-
-    public virtual Estado FkestadoNavigation { get; set; }
-
-    public virtual SolicitudPrestamo FksolicitudPrestamoNavigation { get; set; }
 
     public virtual Usuario FkusuarioNavigation { get; set; }
 }

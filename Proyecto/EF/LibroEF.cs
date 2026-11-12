@@ -8,7 +8,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 {
     internal class LibroEF
     {
-        public static async Task<List<Libro>> ListarAsync()
+        /*public static async Task<List<Libro>> ListarAsync()
         {
             try
             {
@@ -117,7 +117,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 NumeroPagina = fila.NumeroPagina,
                 Isbn = fila.Isbn
             };
-        }
+        }*/
 
     }
 }

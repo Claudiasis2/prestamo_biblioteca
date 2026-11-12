@@ -14,10 +14,10 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 			await using var db = ConexionEf.CrearContexto();
 
 			int prestamosActivos = await db.Prestamos
-				.CountAsync(p => p.Fkusuario == idUsuario && p.Fkestado == 2);
+				.CountAsync(p => p.Fkusuario == idUsuario && p.FkestadoPrestamo == 2);
 			int solicitudesVigentes = await db.SolicitudPrestamos
 				.CountAsync(s => s.Fkusuario == idUsuario
-				&& (s.Fkestado == 4 || s.Fkestado == 5)
+				&& (s.FkestadoSolicitudPrestamo == 4 || s.FkestadoSolicitudPrestamo == 5)
 				&& !db.Prestamos.Any(p => p.FksolicitudPrestamo == s.IdSolicitud));
 			return prestamosActivos + solicitudesVigentes;
 		}
@@ -54,7 +54,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 						Fkusuario = idUsuario,
 						FkmaterialBiblioteca = idMaterial,
 						FechaSolicitud = DateTime.Now,
-						Fkestado = 4
+						FkestadoSolicitudPrestamo = 4
 					};
 					solicitudesNuevas.Add(solicitud);
 				}
@@ -75,8 +75,9 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 			await using var db = ConexionEf.CrearContexto();
 			return await db.SolicitudPrestamos
 				.Include(s => s.FkmaterialBibliotecaNavigation)
-				.Include(s => s.FkestadoNavigation)
-				.Where(s => s.Fkusuario == idUsuario)
+                //.Include(s => s.FkestadoNavigation)
+                .Include(s => s.FkestadoSolicitudPrestamo)
+                .Where(s => s.Fkusuario == idUsuario)
 				.OrderByDescending(s => s.IdSolicitud)
 				.ToListAsync();
 		}
@@ -88,8 +89,9 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             return await db.SolicitudPrestamos
                 .Include(s => s.FkusuarioNavigation)
                         .Include(s => s.FkmaterialBibliotecaNavigation)
-                        .Include(s => s.FkestadoNavigation)
-                        .Where(s => s.Fkestado == 4)
+                        //.Include(s => s.FkestadoNavigation)
+                        .Include(s => s.FkestadoSolicitudPrestamo)
+                        .Where(s => s.FkestadoSolicitudPrestamo == 4)
                         .OrderBy(s => s.IdSolicitud)
                         .ToListAsync();
         }
@@ -101,7 +103,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             return await db.SolicitudPrestamos
                 .Include(s => s.FkusuarioNavigation)
                         .Include(s => s.FkmaterialBibliotecaNavigation)
-                        .Include(s => s.FkestadoNavigation)
+                        //.Include(s => s.FkestadoNavigation)
+                        .Include(s => s.FkestadoSolicitudPrestamo)
                         .FirstOrDefaultAsync(s => s.IdSolicitud == idSolicitud);
         }
 
@@ -112,7 +115,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             var solicitud = await db.SolicitudPrestamos.FindAsync(idSolicitud);
             if (solicitud is null) return false;
 
-            solicitud.Fkestado = nuevoEstado;
+            solicitud.FkestadoSolicitudPrestamo = nuevoEstado;
             await db.SaveChangesAsync();
             return true;
         }

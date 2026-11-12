@@ -8,7 +8,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 {
     internal class DVDServicio
     {
-        public static async Task<List<Dvd>> ListarAsync()
+        /*public static async Task<List<Dvd>> ListarAsync()
             => await DVDEF.ListarAsync();
 
         public static async Task<Dvd?> BuscarAsync(int id)
@@ -66,6 +66,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
         {
             ComprobarId(id);
             return await DVDEF.BorrarAsync(id);
-        }
+        }*/
     }
 }
