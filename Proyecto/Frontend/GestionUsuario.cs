@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 static class GestionUsuario
 {
-    static async public void Menu()
+    public static async Task Menu()
     {
         Console.Clear();
         while (true)
