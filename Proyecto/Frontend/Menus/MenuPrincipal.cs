@@ -14,11 +14,10 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("1. Menú Empledos");
-                Console.WriteLine("2. Menú Administrador");
-                Console.WriteLine("3. Menú Usuario");
-                Console.WriteLine("4. Loggin");
-                Console.WriteLine("5. Menú Usuario (Solicitudes)");
+                Console.WriteLine("1. Menú Administrador");
+                Console.WriteLine("2. Perfil Usuario");
+                Console.WriteLine("3. Loggin");
+                Console.WriteLine("4. Menú Usuario (Solicitudes)");
                 Console.WriteLine("0. SALIR");
                 string opcion = LeerTexto("Opción: ");
                 if (opcion == "0") break;
@@ -26,11 +25,10 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                 {
                     switch (opcion)
                     {
-                        case "1": GestionEmpleado.Menu(); break;
-                        case "2": await MenuAdministrador.Menu(); break;
-                        case "3": GestionUsuario.Menu(); break;
-                        case "4": GestionLogin.Login(); break;
-                        case "5": await GestionSolicitudesPrestamos.Menu(24); break;
+                        case "1": await MenuAdministrador.Menu(); break;
+                        case "2": await GestionUsuario.Menu(); break;
+                        case "3": GestionLogin.Login(); break;
+                        case "4": await GestionSolicitudesPrestamos.Menu(24); break;
                         default:
                             Console.WriteLine("Opción no válida.");
                             break;

@@ -35,7 +35,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                     switch (opcion)
                     {
                         case "1": await GestionMaterial.Menu(); break;
-                        case "2": await GestionUsuarios.Menu(); break;
+                        case "2": await GestionUsuario.Menu(); break;
                         case "3": await GestionCD.Menu(); break;
                         case "4": await GestionDVD.Menu(); break;
                         case "5": await GestionLibros.Menu(); break;
