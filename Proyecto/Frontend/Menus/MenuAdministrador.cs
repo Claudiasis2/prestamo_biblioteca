@@ -44,7 +44,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                         case "8": await GestionEstados.Menu(); break;
                         case "9": await GestionPrestamos.Menu(); break;
                         case "10": await GestionSolicitudesAdmin.Menu(); break;
-                        case "11": await SolicitudMateriales(); break;
+                        case "11": await GestionPrestamosAdmin.Menu(); break;
                         case "12": await RecepcionMateriales(); break;
                         default:
                             Console.WriteLine("Opción no válida.");
