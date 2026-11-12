@@ -11,9 +11,7 @@ Claudia, Francisco y Jordi
 Enlace para Figma: https://www.figma.com/design/UWQk5lDH94CnLBX69yl5fe/PrestamoBiblioteca?node-id=0-1&t=eEGrRcWuSFJ4yIzW-1
 
 # Carga inicial
-
 Para hacer una carga de los datos:
-
 En una base de datos vacía, cargar el fichero migracions.sql y ejecutar el script 
 
 # Casos de uso
@@ -22,7 +20,6 @@ En una base de datos vacía, cargar el fichero migracions.sql y ejecutar el scri
 Login de acceso que diferenciará internamente entre si su nivel es usuario o administrador para darle acceso a unas páginas u otras de la web.
 
 ### USUARIO
-
 **Ver catálogo**
 El usuario podrá ver todo el catálogo de materiales para solicitar, así como su estado (en préstamo, disponible…)
 **Solicitar**
@@ -36,7 +33,7 @@ Poder modificar alguno de sus datos de contactos. Tantos los básicos como si en
 **Ver Prestamos**
 Ha de poder consultar que prestamos se le han realizado y la fecha de vencimiento de los mismos.
 
-# ADMINISTRADOR
+###  ADMINISTRADOR
 (Mismas funciones del usuario)
 Ha de poder realizar todas las acciones que realiza el usuario, así como modificar algunos de sus datos si fuera necesario
 **Gestionar Material (CRUD)**
