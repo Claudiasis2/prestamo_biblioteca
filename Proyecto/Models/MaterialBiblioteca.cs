@@ -11,7 +11,7 @@ public partial class MaterialBiblioteca
 
     public string Titulo { get; set; }
 
-    public int? FktipoMedio { get; set; }
+    public int FktipoMedio { get; set; }
 
     public string NombreDirector { get; set; }
 
@@ -30,6 +30,8 @@ public partial class MaterialBiblioteca
     public short AnioPublicacion { get; set; }
 
     public virtual ICollection<Ejemplar> Ejemplars { get; set; } = new List<Ejemplar>();
+
+    public virtual TipoMedio FktipoMedioNavigation { get; set; }
 
     public virtual ICollection<SolicitudPrestamo> SolicitudPrestamos { get; set; } = new List<SolicitudPrestamo>();
 }

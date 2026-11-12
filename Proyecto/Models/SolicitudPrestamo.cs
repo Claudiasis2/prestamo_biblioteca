@@ -21,6 +21,8 @@ public partial class SolicitudPrestamo
 
     public virtual Empleado FkempleadoNavigation { get; set; }
 
+    public virtual EstadoSolicitudPrestamo FkestadoSolicitudPrestamoNavigation { get; set; }
+
     public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 
     public virtual Usuario FkusuarioNavigation { get; set; }

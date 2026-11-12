@@ -38,7 +38,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                     switch (opcion)
                     {
                         case "1":
-                            //await RealizarSolicitudAsync(idUsuario);
+                            await RealizarSolicitudAsync(idUsuario);
                             break;
                         case "2":
                             await VerMisSolicitudesAsync(idUsuario);
@@ -61,7 +61,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             }
         }
 
-        /*private static async Task RealizarSolicitudAsync(int idUsuario)
+        private static async Task RealizarSolicitudAsync(int idUsuario)
         {
             Console.Clear();
             Console.WriteLine("==================================================");
@@ -159,7 +159,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
             Console.WriteLine("\nPresione cualquier tecla para continuar...");
             Console.ReadKey();
-        }*/
+        }
 
         private static async Task VerMisSolicitudesAsync(int idUsuario)
         {

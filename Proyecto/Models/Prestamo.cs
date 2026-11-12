@@ -29,5 +29,7 @@ public partial class Prestamo
 
     public virtual Empleado FkempleadoNavigation { get; set; }
 
+    public virtual EstadoPrestamo FkestadoPrestamoNavigation { get; set; }
+
     public virtual Usuario FkusuarioNavigation { get; set; }
 }

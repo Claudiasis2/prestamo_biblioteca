@@ -126,7 +126,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             public string Tipo { get; set; } = string.Empty;
         }
 
-        /*public static async Task<List<MaterialConTipo>> ListarDisponiblesConTipoAsync()
+        public static async Task<List<MaterialConTipo>> ListarDisponiblesConTipoAsync()
         {
             await using var db = ConexionEf.CrearContexto();
 
@@ -136,15 +136,27 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 .OrderBy(m => m.IdMaterial)
                 .ToListAsync();
 
-            var idsLibros = await db.Libros.Select(l => l.FkmaterialBiblioteca).ToListAsync(); 
-            var idsCds = await db.Cds.Select(c => c.FkmaterialBiblioteca).ToListAsync(); 
-            var idsDvds = await db.Dvds.Select(d => d.FkmaterialBiblioteca).ToListAsync();
+
+            //var idsLibros = await db.Libros.Select(l => l.FkmaterialBiblioteca).ToListAsync(); 
+            //var idsCds = await db.Cds.Select(c => c.FkmaterialBiblioteca).ToListAsync(); 
+            //var idsDvds = await db.Dvds.Select(d => d.FkmaterialBiblioteca).ToListAsync();
+
+            var idsMaterial = await db.TipoMedios
+            .Join(
+          db.MaterialBibliotecas,
+          t => t.IdTipoMedio,
+          m => m.FktipoMedio
+          (t, m) => new
+          {
+              t.IdTipoMedio = m.FktipoMedio
+          })
+          .ToListAsync();
 
             var resultado = new List<MaterialConTipo>();
 
             foreach (var m in materiales)
             {
-                string tipo = "Material";
+                /*string tipo = "Material";
                 if (idsLibros.Contains(m.IdMaterial)) tipo = "Libro"; 
                 else if (idsCds.Contains(m.IdMaterial)) tipo = "CD"; 
                 else if (idsDvds.Contains(m.IdMaterial)) tipo = "DVD";
@@ -156,10 +168,18 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     AnioPublicacion = m.AnioPublicacion,
                     Tipo = tipo
                 });
+                */
+                resultado.Add(new MaterialConTipo
+                {
+                    IdMaterial = m.IdMaterial,
+                    Titulo = m.Titulo,
+                    AnioPublicacion = m.AnioPublicacion,
+                    Tipo = m.FktipoMedio
+                });
             }
 
             return resultado;
-        }*/
+        }
     }
 
 }
