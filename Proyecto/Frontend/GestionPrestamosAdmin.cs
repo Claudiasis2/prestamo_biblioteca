@@ -67,8 +67,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             Console.WriteLine("       REGISTRAR ENTREGA DE MATERIAL FISICO       ");
             Console.WriteLine("==================================================");
 
+            
             var aprobadas = await PrestamoServicio.ListarSolicitudesAprobadasSinEntregarAsync();
-
+            
             if (!aprobadas.Any())
             {
                 Console.WriteLine("\n[INFORMACIÓN] No existen solicitudes aprobadas pendientes de entregar.");
@@ -136,7 +137,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             {
                 Console.WriteLine("\n[ERROR CONEXIÓN] Fallo de comunicación con SQL Server.");
             }
-
+            
             Console.WriteLine("\nPresione cualquier tecla para continuar...");
             Console.ReadKey();
         }
