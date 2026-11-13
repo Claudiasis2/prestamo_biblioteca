@@ -5,8 +5,6 @@ using System.Data;
 
 public static class UsuarioEF
 {
-
-
     private static Usuario Convertir(Usuario fila)
     {
         return new Usuario
@@ -24,8 +22,7 @@ public static class UsuarioEF
     {
         try
         {
-
-            using var db = ConexionEf.CrearContexto();
+            await using var db = ConexionEf.CrearContexto();
             var query = db.Usuarios.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(nombre))
@@ -58,7 +55,7 @@ public static class UsuarioEF
 
     public static async Task<List<Usuario>> ListarAsync()
     {
-        using var db = ConexionEf.CrearContexto();
+        await using var db = ConexionEf.CrearContexto();
         var filas = db.Usuarios
         .OrderBy(u => u.IdUsuario).ToList();
         return filas.Select(fila => Convertir(fila))
@@ -70,7 +67,7 @@ public static class UsuarioEF
     {
         try
         {
-            using var db = ConexionEf.CrearContexto();
+            await using var db = ConexionEf.CrearContexto();
             var fila = new Usuario
             {
                 Email = u.Email,
@@ -81,7 +78,7 @@ public static class UsuarioEF
                 Password = u.Password
             };
             db.Usuarios.Add(fila);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return fila.IdUsuario;
         }
         catch (SqlException ex)
@@ -95,7 +92,7 @@ public static class UsuarioEF
         try
         {
 
-            using var db = ConexionEf.CrearContexto();
+            await using var db = ConexionEf.CrearContexto();
             var fila = db.Usuarios.SingleOrDefault(q => q.IdUsuario == u.IdUsuario);
             if (fila is null)
                 return false;
@@ -107,7 +104,7 @@ public static class UsuarioEF
                 fila.PrimerApellido = u.PrimerApellido;
             if (u.PrimerApellido != null && u.PrimerApellido != "")
                 fila.SegundoApellido = u.SegundoApellido;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return true;
 
         }
@@ -121,7 +118,7 @@ public static class UsuarioEF
     {
         try
         {
-            using var db = ConexionEf.CrearContexto();
+            await using var db = ConexionEf.CrearContexto();
             var fila = db.Usuarios.SingleOrDefault(f => f.IdUsuario == id);
 
             db.Usuarios.All(f => f.IdUsuario != id);
@@ -136,7 +133,7 @@ public static class UsuarioEF
             if (tieneSolicitud)
                 return false;
             db.Usuarios.Remove(fila);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             return true;
         }
         catch (SqlException ex)
@@ -149,7 +146,7 @@ public static class UsuarioEF
     {
         try
         {
-            using var db = ConexionEf.CrearContexto();
+            await using var db = ConexionEf.CrearContexto();
             var fila = db.Usuarios.SingleOrDefault(q => q.Email == Email && q.Password == Password);
             if (fila is null)
                 return false;
