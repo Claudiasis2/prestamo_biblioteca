@@ -18,6 +18,7 @@ public static class UsuarioEF
         };
     }
 
+
     public static async Task<List<Usuario>> BuscarAsync(int id = 0, string email = "", string nombre = "")
     {
         try
