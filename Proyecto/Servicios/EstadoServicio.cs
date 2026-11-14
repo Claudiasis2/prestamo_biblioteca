@@ -9,12 +9,12 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
     internal class EstadoServicio
     {
         public static async Task<List<Estado>> ListarAsync()
-            => await EstadoEF.ListarAsync();
+            => await EstadoPrestamoEF.ListarAsync();
 
         public static async Task<Estado?> BuscarAsync(int id)
         {
             ComprobarId(id);
-            return await EstadoEF.BuscarAsync(id);
+            return await EstadoPrestamoEF.BuscarAsync(id);
         }
 
         private static void ComprobarId(int id)
@@ -43,7 +43,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
         {
             ComprobarCampos(e);
 
-            return await EstadoEF.InsertarAsync(e);
+            return await EstadoPrestamoEF.InsertarAsync(e);
         }
 
         public static async Task<int> ModificarAsync(Estado e)
@@ -58,13 +58,13 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 
             ComprobarCampos(e);
 
-            return await EstadoEF.ModificarAsync(e);
+            return await EstadoPrestamoEF.ModificarAsync(e);
         }
 
         public static async Task<bool> BorrarAsync(int id)
         {
             ComprobarId(id);
-            return await EstadoEF.BorrarAsync(id);
+            return await EstadoPrestamoEF.BorrarAsync(id);
         }
     }
 }

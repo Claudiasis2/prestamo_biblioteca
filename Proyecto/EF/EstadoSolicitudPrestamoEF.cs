@@ -6,32 +6,32 @@ using System.Text;
 
 namespace ProyectoConjuntoMaterialPrestamo.EF
 {
-    internal class EstadoEF
+    internal class EstadoSolitudPrestamoEF
     {
-        public static async Task<List<Estado>> ListarAsync()
+        public static async Task<List<EstadoSolitudPrestamo>> ListarAsync()
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var filas = await db.Estados
-                    .OrderBy(f => f.IdEstado)
-                    .ToListAsync<Estado>();
+                var filas = await db.EstadoSolitudPrestamos
+                    .OrderBy(f => f.IdEstadoSolitudPrestamo)
+                    .ToListAsync<EstadoSolitudPrestamo>();
                 return filas.Select(fila => Convertir(fila)).ToList();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error accediendo a DB: {ex.Message}");
-                return new List<Estado>();
+                return new List<EstadoSolitudPrestamo>();
             }
         }
 
-        public static async Task<Estado?> BuscarAsync(int id)
+        public static async Task<EstadoSolitudPrestamo?> BuscarAsync(int id)
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = await db.Estados
-                .SingleOrDefaultAsync(f => f.IdEstado == id);
+                var fila = await db.EstadoSolitudPrestamos
+                .SingleOrDefaultAsync(f => f.IdEstadoSolitudPrestamo == id);
                 return fila is null ? null : Convertir(fila);
             }
             catch (Exception ex)
@@ -41,19 +41,19 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             }
         }
 
-        public static async Task<int> InsertarAsync(Estado e)
+        public static async Task<int> InsertarAsync(EstadoSolitudPrestamo e)
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = new Estado
+                var fila = new EstadoSolitudPrestamo
                 {
-                    IdEstado = e.IdEstado,
-                    NombreEstado = e.NombreEstado,
+                    IdEstadoSolitudPrestamo = e.IdEstadoSolitudPrestamo,
+                    NombreEstadoSolitudPrestamo = e.NombreEstadoSolitudPrestamo,
                 };
-                db.Estados.Add(fila);
+                db.EstadoSolitudPrestamos.Add(fila);
                 await db.SaveChangesAsync();
-                return fila.IdEstado;
+                return fila.IdEstadoSolitudPrestamo;
             }
             catch (Exception ex)
             {
@@ -63,19 +63,19 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
         }
 
-        public static async Task<int> ModificarAsync(Estado e)
+        public static async Task<int> ModificarAsync(EstadoSolitudPrestamo e)
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = new Estado
+                var fila = new EstadoSolitudPrestamo
                 {
-                    IdEstado = e.IdEstado,
-                    NombreEstado = e.NombreEstado,
+                    IdEstadoSolitudPrestamo = e.IdEstadoSolitudPrestamo,
+                    NombreEstadoSolitudPrestamo = e.NombreEstadoSolitudPrestamo,
                 };
-                db.Estados.Update(fila);
+                db.EstadoSolitudPrestamos.Update(fila);
                 await db.SaveChangesAsync();
-                return fila.IdEstado;
+                return fila.IdEstadoSolitudPrestamo;
             }
             catch (Exception ex)
             {
@@ -89,10 +89,10 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = db.Estados.SingleOrDefault(
-                f => f.IdEstado == id);
+                var fila = db.EstadoSolitudPrestamos.SingleOrDefault(
+                f => f.IdEstadoSolitudPrestamo == id);
                 if (fila is null) return false;
-                db.Estados.Remove(fila);
+                db.EstadoSolitudPrestamos.Remove(fila);
                 await db.SaveChangesAsync();
                 return true;
             }
@@ -104,12 +104,12 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
         }
 
-        public static Estado Convertir(Estado fila)
+        public static EstadoSolitudPrestamo Convertir(EstadoSolitudPrestamo fila)
         {
-            return new Estado
+            return new EstadoSolitudPrestamo
             {
-                IdEstado = fila.IdEstado,
-                NombreEstado = fila.NombreEstado
+                IdEstadoSolitudPrestamo = fila.IdEstadoSolitudPrestamo,
+                NombreEstadoSolitudPrestamo = fila.NombreEstadoSolitudPrestamo
             };
         }
     }

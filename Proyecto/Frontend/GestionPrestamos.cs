@@ -54,6 +54,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
         static void Mostrar(Prestamo e)
         {
             Console.WriteLine($"Id: {e.IdPrestamo}");
+            Console.WriteLine($"Id del ejemplar: {e.Fkejemplar}");
+            Console.WriteLine($"Id del empleado: {e.Fkempleado}");
+            Console.WriteLine($"Id del estado de la solicitud de préstamo: {e.FkestadoSolicitudPrestamo}");
             Console.WriteLine($"Fecha de préstamo: {e.FechaSalida}");
             Console.WriteLine($"Fecha de devolución: {e.FechaLimiteDevolucion}");
             Console.WriteLine($"Fecha de devolución real: {e.FechaDevolucionReal}");

@@ -52,6 +52,13 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = e.IdMaterial,
                     Titulo = e.Titulo,
                     AnioPublicacion = e.AnioPublicacion,
+                    DuracionMinutos = e.DuracionMinutos,
+                    NombreArtista = e.NombreArtista,
+                    Autor = e.Autor,
+                    NumeroPagina = e.NumeroPagina,
+                    Isbn = e.Isbn,
+                    NombreDirector = e.NombreDirector,
+                    ClasificacionEdad = e.ClasificacionEdad,
                 };
                 db.MaterialBibliotecas.Add(fila);
                 await db.SaveChangesAsync();
@@ -75,6 +82,13 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = e.IdMaterial,
                     Titulo = e.Titulo,
                     AnioPublicacion = e.AnioPublicacion,
+                    DuracionMinutos = e.DuracionMinutos,
+                    NombreArtista = e.NombreArtista,
+                    Autor = e.Autor,
+                    NumeroPagina = e.NumeroPagina,
+                    Isbn = e.Isbn,
+                    NombreDirector = e.NombreDirector,
+                    ClasificacionEdad = e.ClasificacionEdad,
                 };
                 db.MaterialBibliotecas.Update(fila);
                 await db.SaveChangesAsync();
@@ -115,6 +129,13 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 IdMaterial = fila.IdMaterial,
                 Titulo = fila.Titulo,
                 AnioPublicacion = fila.AnioPublicacion,
+                DuracionMinutos = fila.DuracionMinutos,
+                NombreArtista = fila.NombreArtista,
+                Autor = fila.Autor,
+                NumeroPagina = fila.NumeroPagina,
+                Isbn = fila.Isbn,
+                NombreDirector = e.NombreDirector,
+                ClasificacionEdad = e.ClasificacionEdad,
             };
         }
 
@@ -154,7 +175,14 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = m.IdMaterial,
                     Titulo = m.Titulo,
                     AnioPublicacion = m.AnioPublicacion,
-                    Tipo = tipo
+                    Tipo = tipo,
+                    DuracionMinutos = m.DuracionMinutos,
+                    NombreArtista = m.NombreArtista,
+                    Autor = m.Autor,
+                    NumeroPagina = m.NumeroPagina,
+                    Isbn = m.Isbn,
+                    NombreDirector = e.NombreDirector,
+                    ClasificacionEdad = e.ClasificacionEdad,
                 });
             }
 

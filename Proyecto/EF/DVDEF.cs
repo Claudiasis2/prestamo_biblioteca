@@ -49,8 +49,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 var fila = new Dvd
                 {
                     NombreDirector = e.NombreDirector,
-                    DuracionMinutos = e.DuracionMinutos,
                     ClasificacionEdad = e.ClasificacionEdad,
+                    DuracionMinutos = e.DuracionMinutos,
                     FkmaterialBiblioteca = e.FkmaterialBiblioteca
                 };
                 db.Dvds.Add(fila);

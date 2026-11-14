@@ -38,6 +38,13 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
         static void ComprobarCampos(MaterialBiblioteca e)
         {
             ComprobarTexto(e.Titulo, 55, false);
+            ComprobarTexto(e.NombreArtista, 100, false);
+            ComprobarTexto(e.Autor, 100, false);
+            ComprobarTexto(e.Isbn, 20, false);
+            ComprobarTexto(e.NombreDirector, 100, false);
+            if (e.AnioPublicacion < 0)
+                throw new ArgumentException(
+                "El año de publicación no puede ser negativo.");
         }
 
         public static async Task<int> InsertarAsync(MaterialBiblioteca e)
