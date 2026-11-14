@@ -15,13 +15,15 @@ public partial class SolicitudPrestamo
 
     public int Fkusuario { get; set; }
 
-    public int Fkestado { get; set; }
+    public int? Fkempleado { get; set; }
 
-    public virtual Estado FkestadoNavigation { get; set; }
+    public int FkestadoSolicitudPrestamo { get; set; }
+
+    public virtual Empleado FkempleadoNavigation { get; set; }
+
+    public virtual EstadoSolicitudPrestamo FkestadoSolicitudPrestamoNavigation { get; set; }
 
     public virtual MaterialBiblioteca FkmaterialBibliotecaNavigation { get; set; }
 
     public virtual Usuario FkusuarioNavigation { get; set; }
-
-    public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
 }

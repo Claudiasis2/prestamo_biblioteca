@@ -8,7 +8,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 {
     internal class CDServicio
     {
-        public static async Task<List<Cd>> ListarAsync()
+        /*public static async Task<List<Cd>> ListarAsync()
             => await CDEF.ListarAsync();
 
         public static async Task<Cd?> BuscarAsync(int id)
@@ -65,6 +65,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
         {
             ComprobarId(id);
             return await CDEF.BorrarAsync(id);
-        }
+        }*/
     }
 }

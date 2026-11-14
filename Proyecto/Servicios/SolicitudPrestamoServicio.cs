@@ -117,9 +117,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 throw new ArgumentException($"No existe ninguna solicitud registrada con el ID {idSolicitud}.");
             }
 
-            if (solicitud.Fkestado != 4)
+            if (solicitud.FkestadoSolicitudPrestamo != 4)
             {
-                throw new ArgumentException($"La solicitud #{idSolicitud} no se encuentra en estado Pendiente. Estado actual: {solicitud.FkestadoNavigation?.NombreEstado ?? solicitud.Fkestado.ToString()}.");
+                throw new ArgumentException($"La solicitud #{idSolicitud} no se encuentra en estado Pendiente. Estado actual: {solicitud.FkestadoSolicitudPrestamoNavigation?.NombreEstado ?? solicitud.FkestadoSolicitudPrestamo.ToString()}.");
             }
 
             await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 5);
@@ -138,9 +138,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 throw new ArgumentException($"No existe ninguna solicitud registrada con el ID {idSolicitud}.");
             }
 
-            if (solicitud.Fkestado != 4)
+            if (solicitud.FkestadoSolicitudPrestamo != 4)
             {
-                throw new ArgumentException($"La solicitud #{idSolicitud} no se encuentra en estado Pendiente. Estado actual: {solicitud.FkestadoNavigation?.NombreEstado ?? solicitud.Fkestado.ToString()}.");
+                throw new ArgumentException($"La solicitud #{idSolicitud} no se encuentra en estado Pendiente. Estado actual: {solicitud.FkestadoSolicitudPrestamoNavigation?.NombreEstado ?? solicitud.FkestadoSolicitudPrestamo.ToString()}.");
             }
 
             await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 6);

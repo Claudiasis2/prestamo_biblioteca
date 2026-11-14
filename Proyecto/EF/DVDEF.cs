@@ -8,7 +8,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 {
     internal class DVDEF
     {
-        public static async Task<List<Dvd>> ListarAsync()
+        /*public static async Task<List<Dvd>> ListarAsync()
         {
             try
             {
@@ -49,8 +49,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 var fila = new Dvd
                 {
                     NombreDirector = e.NombreDirector,
-                    DuracionMinutos = e.DuracionMinutos,
                     ClasificacionEdad = e.ClasificacionEdad,
+                    DuracionMinutos = e.DuracionMinutos,
                     FkmaterialBiblioteca = e.FkmaterialBiblioteca
                 };
                 db.Dvds.Add(fila);
@@ -118,7 +118,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 NombreDirector = fila.NombreDirector,
                 ClasificacionEdad = fila.ClasificacionEdad
             };
-        }
+        }*/
 
     }
 }

@@ -13,17 +13,15 @@ public partial class MaterialPrestamoContext : DbContext
     {
     }
 
-    public virtual DbSet<Cd> Cds { get; set; }
-
-    public virtual DbSet<Dvd> Dvds { get; set; }
-
     public virtual DbSet<Ejemplar> Ejemplars { get; set; }
 
     public virtual DbSet<Empleado> Empleados { get; set; }
 
-    public virtual DbSet<Estado> Estados { get; set; }
+    public virtual DbSet<EstadoEjemplar> EstadoEjemplars { get; set; }
 
-    public virtual DbSet<Libro> Libros { get; set; }
+    public virtual DbSet<EstadoPrestamo> EstadoPrestamos { get; set; }
+
+    public virtual DbSet<EstadoSolicitudPrestamo> EstadoSolicitudPrestamos { get; set; }
 
     public virtual DbSet<MaterialBiblioteca> MaterialBibliotecas { get; set; }
 
@@ -31,43 +29,12 @@ public partial class MaterialPrestamoContext : DbContext
 
     public virtual DbSet<SolicitudPrestamo> SolicitudPrestamos { get; set; }
 
+    public virtual DbSet<TipoMedio> TipoMedios { get; set; }
+
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Cd>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("Cd");
-
-            entity.Property(e => e.FkmaterialBiblioteca).HasColumnName("FKMaterialBiblioteca");
-            entity.Property(e => e.NombreArtista)
-                .IsRequired()
-                .HasMaxLength(50);
-
-            entity.HasOne(d => d.FkmaterialBibliotecaNavigation).WithMany()
-                .HasForeignKey(d => d.FkmaterialBiblioteca)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Cd_MaterialBiblioteca");
-        });
-
-        modelBuilder.Entity<Dvd>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("Dvd");
-
-            entity.Property(e => e.ClasificacionEdad).HasMaxLength(50);
-            entity.Property(e => e.FkmaterialBiblioteca).HasColumnName("FKMaterialBiblioteca");
-            entity.Property(e => e.NombreDirector).HasMaxLength(50);
-
-            entity.HasOne(d => d.FkmaterialBibliotecaNavigation).WithMany()
-                .HasForeignKey(d => d.FkmaterialBiblioteca)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Dvd_MaterialBiblioteca");
-        });
-
         modelBuilder.Entity<Ejemplar>(entity =>
         {
             entity.HasKey(e => e.IdEjemplar);
@@ -109,33 +76,37 @@ public partial class MaterialPrestamoContext : DbContext
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<Estado>(entity =>
+        modelBuilder.Entity<EstadoEjemplar>(entity =>
         {
-            entity.HasKey(e => e.IdEstado);
+            entity.HasKey(e => e.IdEstadoEjemplar).HasName("PK_Estado");
 
-            entity.ToTable("Estado");
+            entity.ToTable("EstadoEjemplar");
 
             entity.Property(e => e.NombreEstado)
                 .HasMaxLength(20)
                 .IsFixedLength();
         });
 
-        modelBuilder.Entity<Libro>(entity =>
+        modelBuilder.Entity<EstadoPrestamo>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Libro");
+            entity.HasKey(e => e.IdEstadoPrestamo);
 
-            entity.Property(e => e.Autor).HasMaxLength(50);
-            entity.Property(e => e.FkmaterialBiblioteca).HasColumnName("FKMaterialBiblioteca");
-            entity.Property(e => e.Isbn)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+            entity.ToTable("EstadoPrestamo");
 
-            entity.HasOne(d => d.FkmaterialBibliotecaNavigation).WithMany()
-                .HasForeignKey(d => d.FkmaterialBiblioteca)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Libro_MaterialBiblioteca");
+            entity.Property(e => e.NombreEstado)
+                .HasMaxLength(20)
+                .IsFixedLength();
+        });
+
+        modelBuilder.Entity<EstadoSolicitudPrestamo>(entity =>
+        {
+            entity.HasKey(e => e.IdEstadoSolicitudPrestamo);
+
+            entity.ToTable("EstadoSolicitudPrestamo");
+
+            entity.Property(e => e.NombreEstado)
+                .HasMaxLength(20)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<MaterialBiblioteca>(entity =>
@@ -144,9 +115,30 @@ public partial class MaterialPrestamoContext : DbContext
 
             entity.ToTable("MaterialBiblioteca");
 
+            entity.Property(e => e.Autor)
+                .HasMaxLength(100)
+                .IsFixedLength();
+            entity.Property(e => e.ClasificacionEdad)
+                .HasMaxLength(50)
+                .IsFixedLength();
+            entity.Property(e => e.FktipoMedio).HasColumnName("FKTipoMedio");
+            entity.Property(e => e.Isbn)
+                .HasMaxLength(50)
+                .IsFixedLength();
+            entity.Property(e => e.NombreArtista)
+                .HasMaxLength(100)
+                .IsFixedLength();
+            entity.Property(e => e.NombreDirector)
+                .HasMaxLength(50)
+                .IsFixedLength();
             entity.Property(e => e.Titulo)
                 .IsRequired()
                 .HasMaxLength(55);
+
+            entity.HasOne(d => d.FktipoMedioNavigation).WithMany(p => p.MaterialBibliotecas)
+                .HasForeignKey(d => d.FktipoMedio)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaterialBiblioteca_TipoMedio");
         });
 
         modelBuilder.Entity<Prestamo>(entity =>
@@ -159,7 +151,7 @@ public partial class MaterialPrestamoContext : DbContext
             entity.Property(e => e.FechaSalida).HasColumnType("datetime");
             entity.Property(e => e.Fkejemplar).HasColumnName("FKEjemplar");
             entity.Property(e => e.Fkempleado).HasColumnName("FKEmpleado");
-            entity.Property(e => e.Fkestado).HasColumnName("FKEstado");
+            entity.Property(e => e.FkestadoPrestamo).HasColumnName("FKEstadoPrestamo");
             entity.Property(e => e.FksolicitudPrestamo).HasColumnName("FKSolicitudPrestamo");
             entity.Property(e => e.Fkusuario).HasColumnName("FKUsuario");
 
@@ -173,14 +165,10 @@ public partial class MaterialPrestamoContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Prestamo_Empleado");
 
-            entity.HasOne(d => d.FkestadoNavigation).WithMany(p => p.Prestamos)
-                .HasForeignKey(d => d.Fkestado)
+            entity.HasOne(d => d.FkestadoPrestamoNavigation).WithMany(p => p.Prestamos)
+                .HasForeignKey(d => d.FkestadoPrestamo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Prestamo_Estado");
-
-            entity.HasOne(d => d.FksolicitudPrestamoNavigation).WithMany(p => p.Prestamos)
-                .HasForeignKey(d => d.FksolicitudPrestamo)
-                .HasConstraintName("FK_Prestamo_SolicitudPrestamo");
+                .HasConstraintName("FK_Prestamo_EstadoPrestamo");
 
             entity.HasOne(d => d.FkusuarioNavigation).WithMany(p => p.Prestamos)
                 .HasForeignKey(d => d.Fkusuario)
@@ -195,14 +183,19 @@ public partial class MaterialPrestamoContext : DbContext
             entity.ToTable("SolicitudPrestamo");
 
             entity.Property(e => e.FechaSolicitud).HasColumnType("datetime");
-            entity.Property(e => e.Fkestado).HasColumnName("FKEstado");
+            entity.Property(e => e.Fkempleado).HasColumnName("FKEmpleado");
+            entity.Property(e => e.FkestadoSolicitudPrestamo).HasColumnName("FKEstadoSolicitudPrestamo");
             entity.Property(e => e.FkmaterialBiblioteca).HasColumnName("FKMaterialBiblioteca");
             entity.Property(e => e.Fkusuario).HasColumnName("FKUsuario");
 
-            entity.HasOne(d => d.FkestadoNavigation).WithMany(p => p.SolicitudPrestamos)
-                .HasForeignKey(d => d.Fkestado)
+            entity.HasOne(d => d.FkempleadoNavigation).WithMany(p => p.SolicitudPrestamos)
+                .HasForeignKey(d => d.Fkempleado)
+                .HasConstraintName("FK_SolicitudPrestamo_Empleado");
+
+            entity.HasOne(d => d.FkestadoSolicitudPrestamoNavigation).WithMany(p => p.SolicitudPrestamos)
+                .HasForeignKey(d => d.FkestadoSolicitudPrestamo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_SolicitudPrestamo_Estado");
+                .HasConstraintName("FK_SolicitudPrestamo_EstadoSolicitudPrestamo");
 
             entity.HasOne(d => d.FkmaterialBibliotecaNavigation).WithMany(p => p.SolicitudPrestamos)
                 .HasForeignKey(d => d.FkmaterialBiblioteca)
@@ -213,6 +206,17 @@ public partial class MaterialPrestamoContext : DbContext
                 .HasForeignKey(d => d.Fkusuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_SolicitudPrestamo_Usuario");
+        });
+
+        modelBuilder.Entity<TipoMedio>(entity =>
+        {
+            entity.HasKey(e => e.IdTipoMedio);
+
+            entity.ToTable("TipoMedio");
+
+            entity.Property(e => e.NombreMedio)
+                .HasMaxLength(20)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<Usuario>(entity =>
