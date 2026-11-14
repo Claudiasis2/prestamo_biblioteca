@@ -51,7 +51,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdEjemplar = e.IdEjemplar,
                     UbicacionEstanteria = e.UbicacionEstanteria,
                     FkmaterialBiblioteca = e.FkmaterialBiblioteca,
-                    Fkestado = e.Fkestado
+                    FKEempleado = e.FKEempleado,
+                    FkestadoEjemplar = e.FKEstadoEjemplar
                 };
                 db.Ejemplars.Add(fila);
                 await db.SaveChangesAsync();
@@ -75,7 +76,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdEjemplar = e.IdEjemplar,
                     UbicacionEstanteria = e.UbicacionEstanteria,
                     FkmaterialBiblioteca = e.FkmaterialBiblioteca,
-                    Fkestado = e.Fkestado
+                    FKEempleado = e.FKEempleado,
+                    FkestadoEjemplar = e.FKEstadoEjemplar
                 };
                 db.Ejemplars.Update(fila);
                 await db.SaveChangesAsync();
@@ -115,7 +117,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 IdEjemplar = fila.IdEjemplar,
                 UbicacionEstanteria = fila.UbicacionEstanteria,
                 FkmaterialBiblioteca = fila.FkmaterialBiblioteca,
-                Fkestado = fila.Fkestado
+                FKEempleado = fila.FKEempleado,
+                FkestadoEjemplar = fila.FkestadoEjemplar    
             };
         }
     }

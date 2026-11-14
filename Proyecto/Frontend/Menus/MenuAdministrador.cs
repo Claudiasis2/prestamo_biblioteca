@@ -16,15 +16,27 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("1. GESTION DE MATERIALES");
-                Console.WriteLine("2. GESTION DE USUARIOS");
-                Console.WriteLine("3. GESTION DE CD");
-                Console.WriteLine("4. GESTION DE DVD");
-                Console.WriteLine("5. GESTION DE LIBROS");
-                Console.WriteLine("6. GESTION DE EMPLEADOS");
-                Console.WriteLine("7. GESTION DE ESTADOS (PROXIMAMENTE)");
-                Console.WriteLine("8. GESTION DE SOLICITUDES DE PRESTAMOS");
-                Console.WriteLine("9. RECEPCION DE MATERIALES");
+                //Console.WriteLine("1. GESTION DE MATERIALES");
+                //Console.WriteLine("2. GESTION DE USUARIOS");
+                //Console.WriteLine("3. GESTION DE CD");
+                //Console.WriteLine("4. GESTION DE DVD");
+                //Console.WriteLine("5. GESTION DE LIBROS");
+                //Console.WriteLine("6. GESTION DE EMPLEADOS");
+                //Console.WriteLine("7. GESTION DE ESTADOS (PROXIMAMENTE)");
+                //Console.WriteLine("8. GESTION DE SOLICITUDES DE PRESTAMOS");
+                //Console.WriteLine("9. RECEPCION DE MATERIALES");
+
+                Console.WriteLine("1. Gestión de Usuarios");
+                Console.WriteLine("2. Gestión de empleados");
+                Console.WriteLine("3. Gestión de estados de ejemplar");
+                Console.WriteLine("4. Gestión de estados de préstamo");
+                Console.WriteLine("5. Gestión de estados de solicitud de préstamo");
+                Console.WriteLine("6. Gestión de solicitudes de préstamo");
+                Console.WriteLine("7. Gestión de préstamos");
+                Console.WriteLine("8. Gestión de materiales");
+                Console.WriteLine("=====================================================")
+                Console.WriteLine("9. Gestión de recepción de préstamo de materiales");
+                Console.WriteLine("10. Gestión de solicitudes de préstamo de materiales");
                 Console.WriteLine("0. SALIR");
                 string opcion = LeerTexto("Opción: ");
                 if (opcion == "0") break;
@@ -32,15 +44,24 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                 {
                     switch (opcion)
                     {
-                        case "1": await GestionMaterial.Menu(); break;
-                        case "2": await GestionUsuario.Menu(); break;
-                        case "3": await GestionCD.Menu(); break;
-                        case "4": await GestionDVD.Menu(); break;
-                        case "5": await GestionLibros.Menu(); break;
-                        case "6": await GestionEmpleados.Menu(); break;
-                        case "7": await GestionEstados.Menu(); break;
-                        case "8": await GestionSolicitudesAdmin.Menu(); break;
+                        case "1": await GestionUsuario.Menu(); break;
+                        case "2": await GestionEmpleados.Menu(); break;
+                        case "3": await GestionEstadoEjemplares.Menu(); break;
+                        case "4": await GestionEstadoPrestamos.Menu(); break;
+                        case "5": await GestionEstadoSolicitudPrestamos.Menu(); break;
+                        case "6":
+                            bool convertido = int.TryParse(LeerTexto("Id del usuario: "), out int idUsuario);
+                            if (!convertido)
+                            {
+                                Console.WriteLine("Id de usuario no válido.");
+                                continue;
+                            }
+                            await GestionSolicitudesPrestamos.Menu(idUsuario); break;
+                        case "7": await GestionPrestamos.Menu(); break;
+                        case "8": await GestionMaterial.Menu(); break;
                         case "9": await GestionPrestamosAdmin.Menu(); break;
+                        case "10": await GestionSolicitudesAdmin.Menu(); break;
+
                         default:
                             Console.WriteLine("Opción no válida.");
                             break;
