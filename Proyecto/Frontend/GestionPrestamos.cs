@@ -54,6 +54,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
         static void Mostrar(Prestamo e)
         {
             Console.WriteLine($"Id: {e.IdPrestamo}");
+            Console.WriteLine($"Id del ejemplar: {e.Fkejemplar}");
+            Console.WriteLine($"Id del empleado: {e.Fkempleado}");
+            Console.WriteLine($"Id del estado de la solicitud de préstamo: {e.FkestadoPrestamo}");
             Console.WriteLine($"Fecha de préstamo: {e.FechaSalida}");
             Console.WriteLine($"Fecha de devolución: {e.FechaLimiteDevolucion}");
             Console.WriteLine($"Fecha de devolución real: {e.FechaDevolucionReal}");
@@ -109,7 +112,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 FksolicitudPrestamo = int.Parse(LeerTexto("Id de la solicitud de préstamo: ")),
                 Fkempleado = int.Parse(LeerTexto("Id del empleado: ")),
                 Fkusuario = int.Parse(LeerTexto("Id del usuario: ")),
-                Fkestado = int.Parse(LeerTexto("Id del estado: ")),
+                FkestadoPrestamo = int.Parse(LeerTexto("Id del estado: ")),
             };
 
             int id = await PrestamoServicio.InsertarAsync(e);
@@ -138,7 +141,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             e.Fkejemplar = int.Parse(LeerTexto("Nuevo Id del ejemplar: "));
             e.Fkempleado = int.Parse(LeerTexto("Nuevo Id del empleado: "));
             e.Fkusuario = int.Parse(LeerTexto("Nuevo Id del usuario: "));
-            e.Fkestado = int.Parse(LeerTexto("Nuevo Id del estado: "));
+            e.FkestadoPrestamo = int.Parse(LeerTexto("Nuevo Id del estado: "));
 
             int id = await PrestamoServicio.ModificarAsync(e);
             Console.WriteLine($"Prestamo Id {id} modificado.");

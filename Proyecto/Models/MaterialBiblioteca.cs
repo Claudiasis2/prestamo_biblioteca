@@ -11,9 +11,27 @@ public partial class MaterialBiblioteca
 
     public string Titulo { get; set; }
 
+    public int FktipoMedio { get; set; }
+
+    public string NombreDirector { get; set; }
+
+    public string ClasificacionEdad { get; set; }
+
+    public int? DuracionMinutos { get; set; }
+
+    public string Isbn { get; set; }
+
+    public string Autor { get; set; }
+
+    public int? NumeroPaginas { get; set; }
+
+    public string NombreArtista { get; set; }
+
     public short AnioPublicacion { get; set; }
 
     public virtual ICollection<Ejemplar> Ejemplars { get; set; } = new List<Ejemplar>();
+
+    public virtual TipoMedio FktipoMedioNavigation { get; set; }
 
     public virtual ICollection<SolicitudPrestamo> SolicitudPrestamos { get; set; } = new List<SolicitudPrestamo>();
 }

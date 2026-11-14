@@ -52,6 +52,13 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = e.IdMaterial,
                     Titulo = e.Titulo,
                     AnioPublicacion = e.AnioPublicacion,
+                    DuracionMinutos = e.DuracionMinutos,
+                    NombreArtista = e.NombreArtista,
+                    Autor = e.Autor,
+                    NumeroPaginas = e.NumeroPaginas,
+                    Isbn = e.Isbn,
+                    NombreDirector = e.NombreDirector,
+                    ClasificacionEdad = e.ClasificacionEdad,
                 };
                 db.MaterialBibliotecas.Add(fila);
                 await db.SaveChangesAsync();
@@ -75,6 +82,13 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = e.IdMaterial,
                     Titulo = e.Titulo,
                     AnioPublicacion = e.AnioPublicacion,
+                    DuracionMinutos = e.DuracionMinutos,
+                    NombreArtista = e.NombreArtista,
+                    Autor = e.Autor,
+                    NumeroPaginas = e.NumeroPaginas,
+                    Isbn = e.Isbn,
+                    NombreDirector = e.NombreDirector,
+                    ClasificacionEdad = e.ClasificacionEdad,
                 };
                 db.MaterialBibliotecas.Update(fila);
                 await db.SaveChangesAsync();
@@ -115,6 +129,13 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 IdMaterial = fila.IdMaterial,
                 Titulo = fila.Titulo,
                 AnioPublicacion = fila.AnioPublicacion,
+                DuracionMinutos = fila.DuracionMinutos,
+                NombreArtista = fila.NombreArtista,
+                Autor = fila.Autor,
+                NumeroPaginas = fila.NumeroPaginas,
+                Isbn = fila.Isbn,
+                NombreDirector = fila.NombreDirector,
+                ClasificacionEdad = fila.ClasificacionEdad,
             };
         }
 
@@ -124,13 +145,20 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             public string Titulo { get; set; } = string.Empty;
             public int? AnioPublicacion { get; set; }
             public string Tipo { get; set; } = string.Empty;
+            public int? DuracionMinutos { get; set; }
+            public string NombreArtista { get; set; } = string.Empty;
+            public string Autor { get; set; } = string.Empty;
+            public int? NumeroPaginas { get; set; }
+            public string Isbn { get; set; } = string.Empty;
+            public string NombreDirector { get; set; } = string.Empty;
+            public string? ClasificacionEdad { get; set; }
         }
 
         public static async Task<List<MaterialConTipo>> ListarDisponiblesConTipoAsync()
         {
             await using var db = ConexionEf.CrearContexto();
 
-            var materiales = await db.MaterialBibliotecas
+            /*var materiales = await db.MaterialBibliotecas
                 .Include(m => m.Ejemplars)
                 .Where(m => m.Ejemplars.Any(e => e.Fkestado == 1))
                 .OrderBy(m => m.IdMaterial)
@@ -139,9 +167,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             var idsLibros = await db.Libros.Select(l => l.FkmaterialBiblioteca).ToListAsync(); 
             var idsCds = await db.Cds.Select(c => c.FkmaterialBiblioteca).ToListAsync(); 
             var idsDvds = await db.Dvds.Select(d => d.FkmaterialBiblioteca).ToListAsync();
-
-            var resultado = new List<MaterialConTipo>();
-
+            
             foreach (var m in materiales)
             {
                 string tipo = "Material";
@@ -154,7 +180,44 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = m.IdMaterial,
                     Titulo = m.Titulo,
                     AnioPublicacion = m.AnioPublicacion,
-                    Tipo = tipo
+                    Tipo = tipo,
+                    DuracionMinutos = m.DuracionMinutos,
+                    NombreArtista = m.NombreArtista,
+                    Autor = m.Autor,
+                    NumeroPagina = m.NumeroPagina,
+                    Isbn = m.Isbn,
+                    NombreDirector = e.NombreDirector,
+                    ClasificacionEdad = e.ClasificacionEdad,
+                });
+            } 
+             */
+
+            var materiales = await db.MaterialBibliotecas
+                .Include(m => m.FktipoMedio)
+                .Include(m => m.Ejemplars)
+                .Where(m => m.Ejemplars.Any(e => e.Fkestado == 1))
+                .OrderBy(m => m.IdMaterial)
+                .ToListAsync();
+
+            var resultado = new List<MaterialConTipo>();
+
+            foreach (var m in materiales)
+            {
+                
+
+                resultado.Add(new MaterialConTipo
+                {
+                    IdMaterial = m.IdMaterial,
+                    Titulo = m.Titulo,
+                    AnioPublicacion = m.AnioPublicacion,
+                    Tipo = m.FktipoMedioNavigation.NombreMedio,
+                    DuracionMinutos = m.DuracionMinutos,
+                    NombreArtista = m.NombreArtista,
+                    Autor = m.Autor,
+                    NumeroPaginas = m.NumeroPaginas,
+                    Isbn = m.Isbn,
+                    NombreDirector = m.NombreDirector,
+                    ClasificacionEdad = m.ClasificacionEdad,
                 });
             }
 

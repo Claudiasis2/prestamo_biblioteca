@@ -51,9 +51,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 }
             }
         }
-        static void Mostrar(Estado e)
+        static void Mostrar(EstadoPrestamo e)
         {
-            Console.WriteLine($"Id: {e.IdEstado}");
+            Console.WriteLine($"Id: {e.IdEstadoPrestamo}");
             Console.WriteLine($"Descripción: {e.NombreEstado}");
             Console.WriteLine("==============================");
         }
@@ -98,9 +98,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
         async static Task InsertarAsync()
         {
-            var e = new Estado
+            var e = new EstadoPrestamo
             {
-                IdEstado = LeerId(),
+                IdEstadoPrestamo = LeerId(),
                 NombreEstado = LeerTexto("Descripción: "),
             };
 
