@@ -145,19 +145,17 @@ public static class UsuarioEF
         }
     }
 
-    public static async Task<bool> LoginAsync(string Email, string Password)
+    public static async Task<Usuario> LoginAsync(string Email, string Password)
     {
-        try
-        {
-            using var db = ConexionEf.CrearContexto();
-            var fila = db.Usuarios.SingleOrDefault(q => q.Email == Email && q.Password == Password);
-            if (fila is null)
-                return false;
-            return true;
-        }
-        catch (SqlException ex)
-        {
-            throw new ArgumentException("Error al insertar usuario.", ex);
+        try 
+        { 
+            await using var db = ConexionEf.CrearContexto(); 
+            var fila = await db.Usuarios.SingleOrDefaultAsync(q => q.Email == Email && q.Password == Password && q.Activo); 
+            return fila; 
+        } 
+        catch (SqlException ex) 
+        { 
+            throw new ArgumentException("Error al autenticar usuario.", ex); 
         }
     }
 

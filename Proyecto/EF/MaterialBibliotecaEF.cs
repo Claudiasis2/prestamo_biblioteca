@@ -158,42 +158,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
         {
             await using var db = ConexionEf.CrearContexto();
 
-            /*var materiales = await db.MaterialBibliotecas
-                .Include(m => m.Ejemplars)
-                .Where(m => m.Ejemplars.Any(e => e.Fkestado == 1))
-                .OrderBy(m => m.IdMaterial)
-                .ToListAsync();
-
-            var idsLibros = await db.Libros.Select(l => l.FkmaterialBiblioteca).ToListAsync(); 
-            var idsCds = await db.Cds.Select(c => c.FkmaterialBiblioteca).ToListAsync(); 
-            var idsDvds = await db.Dvds.Select(d => d.FkmaterialBiblioteca).ToListAsync();
-            
-            foreach (var m in materiales)
-            {
-                string tipo = "Material";
-                if (idsLibros.Contains(m.IdMaterial)) tipo = "Libro"; 
-                else if (idsCds.Contains(m.IdMaterial)) tipo = "CD"; 
-                else if (idsDvds.Contains(m.IdMaterial)) tipo = "DVD";
-
-                resultado.Add(new MaterialConTipo
-                {
-                    IdMaterial = m.IdMaterial,
-                    Titulo = m.Titulo,
-                    AnioPublicacion = m.AnioPublicacion,
-                    Tipo = tipo,
-                    DuracionMinutos = m.DuracionMinutos,
-                    NombreArtista = m.NombreArtista,
-                    Autor = m.Autor,
-                    NumeroPagina = m.NumeroPagina,
-                    Isbn = m.Isbn,
-                    NombreDirector = e.NombreDirector,
-                    ClasificacionEdad = e.ClasificacionEdad,
-                });
-            } 
-             */
-
             var materiales = await db.MaterialBibliotecas
-                .Include(m => m.FktipoMedio)
+                .Include(m => m.FktipoMedioNavigation)
                 .Include(m => m.Ejemplars)
                 .Where(m => m.Ejemplars.Any(e => e.Fkestado == 1))
                 .OrderBy(m => m.IdMaterial)
@@ -210,7 +176,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     IdMaterial = m.IdMaterial,
                     Titulo = m.Titulo,
                     AnioPublicacion = m.AnioPublicacion,
-                    Tipo = m.FktipoMedioNavigation.NombreMedio,
+                    Tipo = m.FktipoMedioNavigation.NombreMedio ?? "Material",
                     DuracionMinutos = m.DuracionMinutos,
                     NombreArtista = m.NombreArtista,
                     Autor = m.Autor,

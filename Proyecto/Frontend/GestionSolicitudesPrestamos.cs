@@ -29,6 +29,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                     Console.WriteLine("--------------------------------------------------");
                     Console.WriteLine("1. Solicitar nuevo préstamo (1, 2 o 3 materiales)");
                     Console.WriteLine("2. Ver mi historial de solicitudes");
+                    Console.WriteLine("3. Cancelar una solicitud pendiente");
                     Console.WriteLine("0. Volver al menú anterior");
                     Console.WriteLine("--------------------------------------------------");
                     Console.Write("Seleccione una opción: ");
@@ -42,6 +43,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                             break;
                         case "2":
                             await VerMisSolicitudesAsync(idUsuario);
+                            break;
+                        case "3": 
+                            await CancelarSolicitudAsync(idUsuario); 
                             break;
                         case "0":
                             salir = true;
@@ -189,5 +193,58 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             Console.WriteLine("\nPresione cualquier tecla para retornar al menú...");
             Console.ReadKey();
         }
+
+        private static async Task CancelarSolicitudAsync(int idUsuario) 
+        {
+            Console.Clear();
+            Console.WriteLine("==================================================");
+            Console.WriteLine(" CANCELAR SOLICITUD PENDIENTE "); 
+            Console.WriteLine("==================================================");
+            var solicitudes = await SolicitudPrestamoServicio.ListarPorUsuarioAsync(idUsuario);
+            var pendientes = solicitudes.Where(s => s.FkestadoSolicitudPrestamo == 1).ToList(); 
+            if (!pendientes.Any()) 
+            {
+                Console.WriteLine("\\nNo tiene solicitudes en estado Pendiente para cancelar."); 
+                Console.WriteLine("Presione cualquier tecla para retornar...");
+                Console.ReadKey(); 
+                return; 
+            } 
+           
+                Console.WriteLine("SUS SOLICITUDES PENDIENTES:");
+                Console.WriteLine("----------------------------------------------------------------------------------"); 
+                Console.WriteLine("ID Solicitud | Fecha | Material"); 
+                Console.WriteLine("----------------------------------------------------------------------------------"); 
+                foreach (var s in pendientes) 
+                {
+                    string titulo = s.FkmaterialBibliotecaNavigation?.Titulo ?? "Material Desconocido"; 
+                    Console.WriteLine($"{s.IdSolicitud,-12} | {s.FechaSolicitud:dd/MM/yyyy HH:mm} | {titulo}"); 
+                }
+                Console.WriteLine("----------------------------------------------------------------------------------"); 
+                Console.Write("\\nIngrese el ID de la solicitud a cancelar: "); 
+                if (!int.TryParse(Console.ReadLine(), out int idSolicitud) || idSolicitud <= 0) 
+                { 
+                    Console.WriteLine("[ERROR] Debe ingresar un número entero positivo.");
+                    Console.ReadKey(); 
+                    return; 
+                }
+                try 
+                {
+                    await SolicitudPrestamoServicio.CancelarSolicitudUsuarioAsync(idSolicitud, idUsuario); 
+                    Console.WriteLine($"\\n[ÉXITO] La solicitud #{idSolicitud} ha sido CANCELADA y su cupo se ha liberado."); 
+                }
+                catch (ArgumentException ex) 
+                {
+                    Console.WriteLine($"\\n[AVISO] {ex.Message}"); 
+                }
+                catch (InvalidOperationException ex) 
+                {
+                    Console.WriteLine($"\\n[ESTADO] {ex.Message}"); 
+                }
+                catch (DbUpdateException) 
+                { 
+                    Console.WriteLine("\\n[ERROR DE BASE DE DATOS] No se pudo cancelar la solicitud."); 
+                } 
+                Console.WriteLine("\\nPresione cualquier tecla para continuar...");
+                Console.ReadKey(); }
     }
 }
