@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ProyectoConjuntoMaterialPrestamo.Frontend;
+using ProyectoConjuntoMaterialPrestamo.Models;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
@@ -11,13 +12,23 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
     {
         static async public Task Menu()
         {
+            Usuario? usuarioLogueado = null;
             while (true)
             {
                 Console.Clear();
+                Console.WriteLine("=================================================="); 
+                Console.WriteLine(" SISTEMA DE BIBLIOTECA "); 
+                Console.WriteLine("=================================================="); 
+                  if (usuarioLogueado != null)
+                  { 
+                    Console.WriteLine($" [Sesión activa: {usuarioLogueado.NombreUsuario.Trim()} (ID: {usuarioLogueado.IdUsuario})]");
+                    Console.WriteLine("--------------------------------------------------"); 
+                }
+
                 Console.WriteLine("1. Menú Administrador");
                 Console.WriteLine("2. Perfil Usuario");
-                Console.WriteLine("3. Loggin");
-                Console.WriteLine("4. Menú Usuario (Solicitudes)");
+                Console.WriteLine("3. Iniciar Sesión(Login)");
+                Console.WriteLine("4. Menú Usuario (Solicitudes de Préstamo)");
                 Console.WriteLine("0. SALIR");
                 string opcion = LeerTexto("Opción: ");
                 if (opcion == "0") break;
@@ -27,10 +38,22 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                     {
                         case "1": await MenuAdministrador.Menu(); break;
                         case "2": await GestionUsuario.Menu(); break;
-                        case "3": GestionLogin.Login(); break;
-                        case "4": await GestionSolicitudesPrestamos.Menu(24); break;
-                        default:
+                        case "3": 
+                                usuarioLogueado = await GestionLogin.LoginAsync(); break;
+                        case "4":
+                            if (usuarioLogueado == null) 
+                            { 
+                                Console.WriteLine("\\n[AVISO] Debe iniciar sesión (Opción 3) antes de acceder a la gestión de solicitudes.");
+                                Console.WriteLine("Presione cualquier tecla para continuar...");
+                                Console.ReadKey(); }
+                            else
+                            { 
+                                await GestionSolicitudesPrestamos.Menu(usuarioLogueado.IdUsuario); 
+                            }
+                            break;
+                         default:
                             Console.WriteLine("Opción no válida.");
+                            Console.ReadKey();
                             break;
                     }
                 }

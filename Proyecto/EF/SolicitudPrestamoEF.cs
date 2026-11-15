@@ -9,6 +9,11 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 {
 	public static class SolicitudPrestamoEF
 	{
+        public const int ESTADO_SOLICITUD_PENDIENTE = 1; 
+		public const int ESTADO_SOLICITUD_APROBADA = 2;
+		public const int ESTADO_SOLICITUD_RECHAZADA = 3; 
+		public const int ESTADO_SOLICITUD_CANCELADA = 4;
+		
 		public static async Task<int> ObtenerCupoUsadoUsuarioAsync(int idUsuario)
 		{
 			await using var db = ConexionEf.CrearContexto();
@@ -17,7 +22,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 				.CountAsync(p => p.Fkusuario == idUsuario && p.FkestadoPrestamo == 2);
 			int solicitudesVigentes = await db.SolicitudPrestamos
 				.CountAsync(s => s.Fkusuario == idUsuario
-				&& (s.FkestadoSolicitudPrestamo == 4 || s.FkestadoSolicitudPrestamo == 5)
+				&& (s.FkestadoSolicitudPrestamo == ESTADO_SOLICITUD_PENDIENTE || s.FkestadoSolicitudPrestamo == ESTADO_SOLICITUD_APROBADA)
 				&& !db.Prestamos.Any(p => p.FksolicitudPrestamo == s.IdSolicitud));
 			return prestamosActivos + solicitudesVigentes;
 		}
@@ -30,7 +35,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 			foreach (var idMat in idsMateriales)
 			{
 				bool tieneEjemplarDisponible = await db.Ejemplars
-                    .AnyAsync(e => e.FkmaterialBiblioteca == idMat && e.Fkestado == 1);
+					.AnyAsync(e => e.FkmaterialBiblioteca == idMat && e.Fkestado == 1);
 				if (!tieneEjemplarDisponible)
 				{
 					sinDisponibilidad.Add(idMat);
@@ -39,6 +44,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
 			return sinDisponibilidad;
 		}
+
 		public static async Task<List<int>> InsertarSolicitudesAsync(int idUsuario, List<int> idsMateriales)
 		{
 			await using var db = ConexionEf.CrearContexto();
@@ -54,8 +60,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 						Fkusuario = idUsuario,
 						FkmaterialBiblioteca = idMaterial,
 						FechaSolicitud = DateTime.Now,
-                        FkestadoSolicitudPrestamo = 4
-					};
+                        FkestadoSolicitudPrestamo = ESTADO_SOLICITUD_PENDIENTE
+                    };
 					solicitudesNuevas.Add(solicitud);
 				}
 
@@ -70,42 +76,43 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 				throw;
 			}
 		}
+
 		public static async Task<List<SolicitudPrestamo>> ListarPorUsuarioAsync(int idUsuario)
 		{
 			await using var db = ConexionEf.CrearContexto();
 			return await db.SolicitudPrestamos
 				.Include(s => s.FkmaterialBibliotecaNavigation)
-				.Include(s => s.FkestadoSolicitudPrestamo)
+				.Include(s => s.FkestadoSolicitudPrestamoNavigation)
 				.Where(s => s.Fkusuario == idUsuario)
 				.OrderByDescending(s => s.IdSolicitud)
 				.ToListAsync();
 		}
 
-        public static async Task<List<SolicitudPrestamo>> ListarPendientesAsync()
+		public static async Task<List<SolicitudPrestamo>> ListarPendientesAsync()
         {
             await using var db = ConexionEf.CrearContexto();
 
             return await db.SolicitudPrestamos
                 .Include(s => s.FkusuarioNavigation)
                         .Include(s => s.FkmaterialBibliotecaNavigation)
-                        .Include(s => s.FkestadoSolicitudPrestamo)
-                        .Where(s => s.FkestadoSolicitudPrestamo == 4)
+                        .Include(s => s.FkestadoSolicitudPrestamoNavigation)
+                        .Where(s => s.FkestadoSolicitudPrestamo == ESTADO_SOLICITUD_PENDIENTE)
                         .OrderBy(s => s.IdSolicitud)
                         .ToListAsync();
         }
 
-        public static async Task<SolicitudPrestamo?> BuscarPorIdAsync(int idSolicitud)
-        {
-            await using var db = ConexionEf.CrearContexto();
+		public static async Task<SolicitudPrestamo?> BuscarPorIdAsync(int idSolicitud)
+		{
+			await using var db = ConexionEf.CrearContexto();
 
-            return await db.SolicitudPrestamos
-                .Include(s => s.FkusuarioNavigation)
-                        .Include(s => s.FkmaterialBibliotecaNavigation)
-                        .Include(s => s.FkestadoSolicitudPrestamo)
-                        .FirstOrDefaultAsync(s => s.IdSolicitud == idSolicitud);
-        }
+			return await db.SolicitudPrestamos
+				.Include(s => s.FkusuarioNavigation)
+						.Include(s => s.FkmaterialBibliotecaNavigation)
+						.Include(s => s.FkestadoSolicitudPrestamoNavigation)
+						.FirstOrDefaultAsync(s => s.IdSolicitud == idSolicitud);
+		}
 
-        public static async Task<bool> CambiarEstadoAsync(int idSolicitud, int nuevoEstado)
+		public static async Task<bool> CambiarEstadoAsync(int idSolicitud, int nuevoEstado)
         {
             await using var db = ConexionEf.CrearContexto();
 
@@ -115,6 +122,22 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             solicitud.FkestadoSolicitudPrestamo = nuevoEstado;
             await db.SaveChangesAsync();
             return true;
+        }
+
+        public static async Task<bool> CancelarSolicitudUsuarioAsync(int idSolicitud, int idUsuario)
+        {
+            await using var db = ConexionEf.CrearContexto();
+
+            var solicitud = await db.SolicitudPrestamos.FirstOrDefaultAsync(s => s.IdSolicitud == idSolicitud && s.Fkusuario == idUsuario);
+            if (solicitud is null) return false;
+
+            if (solicitud.FkestadoSolicitudPrestamo != 1)
+			{ 
+				throw new InvalidOperationException($"La solicitud #{idSolicitud} no se puede cancelar porque no está en estado Pendiente."); 
+			}
+            solicitud.FkestadoSolicitudPrestamo = 4;
+			await db.SaveChangesAsync(); 
+			return true;
         }
     }
 }

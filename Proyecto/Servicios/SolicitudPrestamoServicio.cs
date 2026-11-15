@@ -145,6 +145,26 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 
             await SolicitudPrestamoEF.CambiarEstadoAsync(idSolicitud, 6);
         }
+
+        public static async Task CancelarSolicitudUsuarioAsync(int idSolicitud, int idUsuario)
+        {
+            if (idSolicitud <= 0)
+            {
+                throw new ArgumentException("El identificador de la solicitud debe ser un entero positivo.");
+            }
+
+            if (idUsuario <= 0)
+            {
+                throw new ArgumentException("El identificador del usuario debe ser un entero positivo.");
+            }
+
+            bool cancelada = await SolicitudPrestamoEF.CancelarSolicitudUsuarioAsync(idSolicitud, idUsuario);
+
+            if (!cancelada)
+            {
+                throw new ArgumentException($"No existe la solicitud #{idSolicitud} asociada a su cuenta de usuario.");
+            }
+        }
     }
 }
 
