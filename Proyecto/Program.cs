@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using DotNetEnv;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.Frontend.Menus;
 using ProyectoConjuntoMaterialPrestamo.Models;
@@ -7,6 +8,7 @@ class Program
 {
     public static async Task Main()
     {
+        Env.Load();
         try
         {
             await MenuPrincipal.Menu();
