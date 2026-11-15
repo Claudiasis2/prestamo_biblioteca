@@ -6,32 +6,32 @@ using System.Text;
 
 namespace ProyectoConjuntoMaterialPrestamo.EF
 {
-    internal class EstadoEF
+    internal class EstadoEjemplarEF
     {
-        public static async Task<List<Estado>> ListarAsync()
+        public static async Task<List<EstadoEjemplar>> ListarAsync()
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var filas = await db.Estados
-                    .OrderBy(f => f.IdEstado)
-                    .ToListAsync<Estado>();
+                var filas = await db.EstadoEjemplars
+                    .OrderBy(f => f.IdEstadoEjemplar)
+                    .ToListAsync<EstadoEjemplar>();
                 return filas.Select(fila => Convertir(fila)).ToList();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error accediendo a DB: {ex.Message}");
-                return new List<Estado>();
+                return new List<EstadoEjemplar>();
             }
         }
 
-        public static async Task<Estado?> BuscarAsync(int id)
+        public static async Task<EstadoEjemplar?> BuscarAsync(int id)
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = await db.Estados
-                .SingleOrDefaultAsync(f => f.IdEstado == id);
+                var fila = await db.EstadoEjemplars
+                .SingleOrDefaultAsync(f => f.IdEstadoEjemplar == id);
                 return fila is null ? null : Convertir(fila);
             }
             catch (Exception ex)
@@ -41,19 +41,19 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             }
         }
 
-        public static async Task<int> InsertarAsync(Estado e)
+        public static async Task<int> InsertarAsync(EstadoEjemplar e)
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = new Estado
+                var fila = new EstadoEjemplar
                 {
-                    IdEstado = e.IdEstado,
+                    IdEstadoEjemplar = e.IdEstadoEjemplar,
                     NombreEstado = e.NombreEstado,
                 };
-                db.Estados.Add(fila);
+                db.EstadoEjemplars.Add(fila);
                 await db.SaveChangesAsync();
-                return fila.IdEstado;
+                return fila.IdEstadoEjemplar;
             }
             catch (Exception ex)
             {
@@ -63,19 +63,19 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
         }
 
-        public static async Task<int> ModificarAsync(Estado e)
+        public static async Task<int> ModificarAsync(EstadoEjemplar e)
         {
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = new Estado
+                var fila = new EstadoEjemplar
                 {
-                    IdEstado = e.IdEstado,
+                    IdEstadoEjemplar = e.IdEstadoEjemplar,
                     NombreEstado = e.NombreEstado,
                 };
-                db.Estados.Update(fila);
+                db.EstadoEjemplars.Update(fila);
                 await db.SaveChangesAsync();
-                return fila.IdEstado;
+                return fila.IdEstadoEjemplar;
             }
             catch (Exception ex)
             {
@@ -89,10 +89,10 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             try
             {
                 await using var db = ConexionEf.CrearContexto();
-                var fila = db.Estados.SingleOrDefault(
-                f => f.IdEstado == id);
+                var fila = db.EstadoEjemplars.SingleOrDefault(
+                f => f.IdEstadoEjemplar == id);
                 if (fila is null) return false;
-                db.Estados.Remove(fila);
+                db.EstadoEjemplars.Remove(fila);
                 await db.SaveChangesAsync();
                 return true;
             }
@@ -104,11 +104,11 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
 
         }
 
-        public static Estado Convertir(Estado fila)
+        public static EstadoEjemplar Convertir(EstadoEjemplar fila)
         {
-            return new Estado
+            return new EstadoEjemplar
             {
-                IdEstado = fila.IdEstado,
+                IdEstadoEjemplar = fila.IdEstadoEjemplar,
                 NombreEstado = fila.NombreEstado
             };
         }

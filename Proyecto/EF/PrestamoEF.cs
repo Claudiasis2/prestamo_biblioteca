@@ -15,7 +15,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             return await db.SolicitudPrestamos
                 .Include(s => s.FkusuarioNavigation)
                 .Include(s => s.FkmaterialBibliotecaNavigation)
-                .Where(s => s.Fkestado == 5
+                .Where(s => s.FkestadoSolicitudPrestamo == 5
                          && !db.Prestamos.Any(p => p.FksolicitudPrestamo == s.IdSolicitud))
                 .OrderBy(s => s.IdSolicitud)
                 .ToListAsync();
@@ -69,7 +69,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     Fkempleado = e.Fkempleado,
                     Fkusuario = e.Fkusuario,
                     Fkejemplar = e.Fkejemplar,
-                    Fkestado = e.Fkestado,
+                    FkestadoPrestamo = e.FkestadoPrestamo,
                 };
                 db.Prestamos.Add(fila);
                 await db.SaveChangesAsync();
@@ -98,7 +98,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     Fkempleado = e.Fkempleado,
                     Fkusuario = e.Fkusuario,
                     Fkejemplar = e.Fkejemplar,
-                    Fkestado = e.Fkestado
+                    FkestadoPrestamo = e.FkestadoPrestamo
                 };
                 db.Prestamos.Update(fila);
                 await db.SaveChangesAsync();
@@ -144,7 +144,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 Fkempleado = fila.Fkempleado,
                 Fkusuario = fila.Fkusuario,
                 Fkejemplar = fila.Fkejemplar,
-                Fkestado = fila.Fkestado
+                FkestadoPrestamo = fila.FkestadoPrestamo
             };
         }
 
@@ -176,7 +176,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     Fkempleado = idEmpleado,
                     FechaSalida = DateTime.Now,
                     FechaLimiteDevolucion = DateOnly.FromDateTime(DateTime.Now.AddDays(diasPrestamo)),
-                    Fkestado = 2
+                    FkestadoPrestamo = 2
                 };
 
                 db.Prestamos.Add(nuevoPrestamo);
@@ -203,8 +203,8 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 .Include(p => p.FkusuarioNavigation)
                 .Include(p => p.FkejemplarNavigation)
                     .ThenInclude(e => e.FkmaterialBibliotecaNavigation)
-                .Include(p => p.FkestadoNavigation)
-                .Where(p => p.Fkestado == 2)
+                .Include(p => p.FkestadoPrestamo)
+                .Where(p => p.FkestadoPrestamo == 2)
                 .OrderBy(p => p.IdPrestamo)
                 .ToListAsync();
         }
@@ -223,11 +223,11 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 if (prestamo is null)
                     throw new ArgumentException($"No existe el préstamo #{idPrestamo}.");
 
-                if (prestamo.Fkestado != 2)
+                if (prestamo.FkestadoPrestamo != 2)
                     throw new InvalidOperationException($"El préstamo #{idPrestamo} ya se encuentra devuelto o finalizado.");
 
                 prestamo.FechaDevolucionReal = DateTime.Now;
-                prestamo.Fkestado = 3;
+                prestamo.FkestadoPrestamo = 3;
 
                 if (prestamo.FkejemplarNavigation != null)
                 {

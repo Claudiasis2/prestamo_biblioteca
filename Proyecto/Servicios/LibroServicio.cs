@@ -8,7 +8,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 {
     internal class LibroServicio
     {
-        public static async Task<List<Libro>> ListarAsync()
+        /*public static async Task<List<Libro>> ListarAsync()
             => await LibroEF.ListarAsync();
 
         public static async Task<Libro?> BuscarAsync(int id)
@@ -67,6 +67,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
         {
             ComprobarId(id);
             return await LibroEF.BorrarAsync(id);
-        }
+        }*/
     }
 }

@@ -18,4 +18,6 @@ public partial class Empleado
     public int IdEmpleado { get; set; }
 
     public virtual ICollection<Prestamo> Prestamos { get; set; } = new List<Prestamo>();
+
+    public virtual ICollection<SolicitudPrestamo> SolicitudPrestamos { get; set; } = new List<SolicitudPrestamo>();
 }

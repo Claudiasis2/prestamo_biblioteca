@@ -11,7 +11,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     internal class GestionCD
     {
-        static async public Task Menu()
+        /*static async public Task Menu()
         {
             while (true)
             {
@@ -173,6 +173,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
             Console.WriteLine("Pulsa una tecla para continuar...");
             Console.ReadKey();
         }
-
+        */
     }
 }

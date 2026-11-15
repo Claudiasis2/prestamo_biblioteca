@@ -181,7 +181,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 foreach (var s in solicitudes)
                 {
                     string titulo = s.FkmaterialBibliotecaNavigation?.Titulo ?? "Material Desconocido";
-                    string estado = s.FkestadoNavigation?.NombreEstado ?? "N/A";
+                    string estado = s.FkestadoSolicitudPrestamoNavigation?.NombreEstado ?? "N/A";
                     Console.WriteLine($"{s.IdSolicitud,-12} | {s.FechaSolicitud:dd/MM/yyyy HH:mm} | {titulo,-33} | {estado}");
                 }
             }

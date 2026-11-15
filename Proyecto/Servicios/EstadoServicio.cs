@@ -8,13 +8,13 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 {
     internal class EstadoServicio
     {
-        public static async Task<List<Estado>> ListarAsync()
-            => await EstadoEF.ListarAsync();
+        public static async Task<List<EstadoPrestamo>> ListarAsync()
+            => await EstadoPrestamoEF.ListarAsync();
 
-        public static async Task<Estado?> BuscarAsync(int id)
+        public static async Task<EstadoPrestamo?> BuscarAsync(int id)
         {
             ComprobarId(id);
-            return await EstadoEF.BuscarAsync(id);
+            return await EstadoPrestamoEF.BuscarAsync(id);
         }
 
         private static void ComprobarId(int id)
@@ -34,21 +34,21 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
                 $"Un texto supera los {maximo} caracteres.");
         }
 
-        static void ComprobarCampos(Estado e)
+        static void ComprobarCampos(EstadoPrestamo e)
         {
             ComprobarTexto(e.NombreEstado, 100, true);
         }
 
-        public static async Task<int> InsertarAsync(Estado e)
+        public static async Task<int> InsertarAsync(EstadoPrestamo e)
         {
             ComprobarCampos(e);
 
-            return await EstadoEF.InsertarAsync(e);
+            return await EstadoPrestamoEF.InsertarAsync(e);
         }
 
-        public static async Task<int> ModificarAsync(Estado e)
+        public static async Task<int> ModificarAsync(EstadoPrestamo e)
         {
-            Estado? mat = await BuscarAsync(e.IdEstado);
+            EstadoPrestamo? mat = await BuscarAsync(e.IdEstadoPrestamo);
 
             if (mat is null)
             {
@@ -58,13 +58,13 @@ namespace ProyectoConjuntoMaterialPrestamo.Servicios
 
             ComprobarCampos(e);
 
-            return await EstadoEF.ModificarAsync(e);
+            return await EstadoPrestamoEF.ModificarAsync(e);
         }
 
         public static async Task<bool> BorrarAsync(int id)
         {
             ComprobarId(id);
-            return await EstadoEF.BorrarAsync(id);
+            return await EstadoPrestamoEF.BorrarAsync(id);
         }
     }
 }
