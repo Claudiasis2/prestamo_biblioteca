@@ -16,16 +16,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
             while (true)
             {
                 Console.Clear();
-                //Console.WriteLine("1. GESTION DE MATERIALES");
-                //Console.WriteLine("2. GESTION DE USUARIOS");
-                //Console.WriteLine("3. GESTION DE CD");
-                //Console.WriteLine("4. GESTION DE DVD");
-                //Console.WriteLine("5. GESTION DE LIBROS");
-                //Console.WriteLine("6. GESTION DE EMPLEADOS");
-                //Console.WriteLine("7. GESTION DE ESTADOS (PROXIMAMENTE)");
-                //Console.WriteLine("8. GESTION DE SOLICITUDES DE PRESTAMOS");
-                //Console.WriteLine("9. RECEPCION DE MATERIALES");
-
+                Console.WriteLine("==================================================");
+                Console.WriteLine(" MENU DE ADMINISTRADOR ");
+                Console.WriteLine("==================================================");
                 Console.WriteLine("1. Gestión de Usuarios");
                 Console.WriteLine("2. Gestión de empleados");
                 Console.WriteLine("3. Gestión de estados de ejemplar");
