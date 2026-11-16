@@ -10,25 +10,31 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
     internal class MenuPrincipal
     {
+
+        public static Usuario? usuarioLogueado = null;
+
         static async public Task Menu()
         {
-            Usuario? usuarioLogueado = null;
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine("=================================================="); 
                 Console.WriteLine(" SISTEMA DE BIBLIOTECA "); 
                 Console.WriteLine("=================================================="); 
-                  if (usuarioLogueado != null)
-                  { 
-                    Console.WriteLine($" [Sesión activa: {usuarioLogueado.NombreUsuario.Trim()} (ID: {usuarioLogueado.IdUsuario})]");
+                if (usuarioLogueado != null)
+                { 
+                    Console.WriteLine($" [Sesión Usuario activa: {usuarioLogueado.NombreUsuario.Trim()} (ID: {usuarioLogueado.IdUsuario})]");
                     Console.WriteLine("--------------------------------------------------"); 
                 }
+                else
+                {
+                    Console.WriteLine(" [No hay sesión de usuario activa]");
+                    Console.WriteLine("--------------------------------------------------");
+                }
 
-                Console.WriteLine("1. Menú Administrador");
-                Console.WriteLine("2. Perfil Usuario");
-                Console.WriteLine("3. Iniciar Sesión(Login)");
-                Console.WriteLine("4. Menú Usuario (Solicitudes de Préstamo)");
+                Console.WriteLine("1. Menú Empleados");
+                Console.WriteLine("2. Iniciar Sesión Usuario (Login)");
+                Console.WriteLine("3. Menú Usuario (Solicitudes de Préstamo)");
                 Console.WriteLine("0. SALIR");
                 string opcion = LeerTexto("Opción: ");
                 if (opcion == "0") break;
@@ -36,11 +42,10 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                 {
                     switch (opcion)
                     {
-                        case "1": await MenuAdministrador.Menu(); break;
-                        case "2": await GestionUsuario.Menu(); break;
-                        case "3": 
+                        case "1": await MenuEmpleados.Menu(); break;
+                        case "2": 
                                 usuarioLogueado = await GestionLogin.LoginAsync(); break;
-                        case "4":
+                        case "3":
                             if (usuarioLogueado == null) 
                             { 
                                 Console.WriteLine("\\n[AVISO] Debe iniciar sesión (Opción 3) antes de acceder a la gestión de solicitudes.");
@@ -48,7 +53,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                                 Console.ReadKey(); }
                             else
                             { 
-                                await GestionSolicitudesPrestamos.Menu(usuarioLogueado.IdUsuario); 
+                                await GestionUsuario.Menu(); 
                             }
                             break;
                          default:
