@@ -1,6 +1,7 @@
 ﻿using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using ProyectoConjuntoMaterialPrestamo.Frontend;
 using ProyectoConjuntoMaterialPrestamo.Frontend.Menus;
 using ProyectoConjuntoMaterialPrestamo.Models;
 
@@ -11,7 +12,8 @@ class Program
         Env.Load();
         try
         {
-            await MenuPrincipal.Menu();
+            IConsola consola = new ConsolaReal();
+            await MenuPrincipal.Menu(consola);
         }
         catch (ArgumentException ex)
         {
