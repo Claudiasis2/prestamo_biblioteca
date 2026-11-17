@@ -53,7 +53,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                                 Console.ReadKey(); }
                             else
                             { 
-                                await GestionUsuario.Menu(); 
+                                await GestionSolicitudesPrestamos.Menu(usuarioLogueado.IdUsuario); 
                             }
                             break;
                          default:
