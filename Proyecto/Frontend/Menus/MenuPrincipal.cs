@@ -6,7 +6,7 @@ using ProyectoConjuntoMaterialPrestamo.Models;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
-    internal class MenuPrincipal
+    public class MenuPrincipal
     {
         public static async Task Menu(IConsola consola)
         {
@@ -44,15 +44,15 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                     switch (opcion)
                     {
                         case "1":
-                            await MenuAdministrador.Menu();
+                            await MenuAdministrador.Menu(consola);
                             break;
 
                         case "2":
-                            await GestionUsuario.Menu();
+                            await GestionUsuario.Menu(consola);
                             break;
 
                         case "3":
-                            usuarioLogueado = await GestionLogin.LoginAsync();
+                            usuarioLogueado = await GestionLogin.LoginAsync(consola);
                             break;
 
                         case "4":
@@ -66,9 +66,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                             }
                             else
                             {
-                                await GestionSolicitudesPrestamos.Menu(
-                                    usuarioLogueado.IdUsuario
-                                );
+                                await GestionSolicitudesPrestamos.Menu(usuarioLogueado.IdUsuario, consola);
                             }
                             break;
 

@@ -3,6 +3,7 @@ using DotNetEnv;
 using Microsoft.Data.SqlClient;
 using ProyectoConjuntoMaterialPrestamo.Models;
 using ProyectoConjuntoMaterialPrestamo.Servicios;
+using ProyectoConjuntoMaterialPrestamo.Frontend.Menus;
 
 public class LoginIntegracionTests : IAsyncLifetime
 {
@@ -12,33 +13,38 @@ public class LoginIntegracionTests : IAsyncLifetime
 
     private const string Password = "Test123456";
 
+
     public async Task InitializeAsync()
     {
-        // Buscar .env.test desde el directorio del test
-        var directorio = new DirectoryInfo(AppContext.BaseDirectory);
-
-        while (directorio != null &&
-               !File.Exists(Path.Combine(directorio.FullName, ".env.test")))
-        {
-            directorio = directorio.Parent;
-        }
-
-        if (directorio == null)
-            throw new FileNotFoundException(
-                "No se encontró el archivo .env.test");
-
-        // Cargar explícitamente la conexión de pruebas
-        var rutaEnv = Path.Combine(directorio.FullName, ".env.test");
-
-        Environment.SetEnvironmentVariable(
-            "MATERIAL_PRESTAMO_CONNECTION", null);
-
-        Env.Load(rutaEnv);
-
-        // Protección: impedir que los tests utilicen otra base
+        // Comprobar si ya existe una conexión configurada.
+        // GitHub Actions proporcionará esta variable directamente.
         var cadena = Environment.GetEnvironmentVariable(
             "MATERIAL_PRESTAMO_CONNECTION");
 
+        // Si no existe, cargar la configuración local de pruebas.
+        if (string.IsNullOrWhiteSpace(cadena))
+        {
+            var directorio = new DirectoryInfo(AppContext.BaseDirectory);
+
+            while (directorio != null &&
+                   !File.Exists(Path.Combine(directorio.FullName, ".env.test")))
+            {
+                directorio = directorio.Parent;
+            }
+
+            if (directorio == null)
+                throw new FileNotFoundException(
+                    "No se encontró el archivo .env.test");
+
+            var rutaEnv = Path.Combine(directorio.FullName, ".env.test");
+
+            Env.Load(rutaEnv);
+
+            cadena = Environment.GetEnvironmentVariable(
+                "MATERIAL_PRESTAMO_CONNECTION");
+        }
+
+        // Protección: impedir que los tests utilicen otra base.
         if (string.IsNullOrWhiteSpace(cadena))
             throw new InvalidOperationException(
                 "No se configuró la conexión de pruebas.");
@@ -49,7 +55,7 @@ public class LoginIntegracionTests : IAsyncLifetime
             throw new InvalidOperationException(
                 "Los tests solo pueden ejecutarse contra MaterialPrestamo_Test.");
 
-        // Crear usuario exclusivo para esta prueba
+        // Crear usuario exclusivo para esta prueba.
         _idUsuario = await UsuarioEF.InsertarAsync(new Usuario
         {
             Email = _email,
@@ -60,6 +66,7 @@ public class LoginIntegracionTests : IAsyncLifetime
             Activo = true
         });
     }
+
 
     public async Task DisposeAsync()
     {
@@ -95,5 +102,28 @@ public class LoginIntegracionTests : IAsyncLifetime
             "usuario_inexistente@example.com", Password);
 
         Assert.Null(usuario);
+    }
+    [Fact]
+    public async Task Menu_LoginCorrecto_MuestraBienvenida()
+    {
+        // Arrange
+        var consola = new ConsolaFalsa(
+            "3",
+            _email,
+            Password,
+            "4",
+            "0",
+            "0"
+        );
+
+        // Act
+        await MenuPrincipal.Menu(consola);
+
+        // Assert
+        string salida = consola.ObtenerTextoMostrado();
+
+        Assert.Contains("¡BIENVENIDO/A UsuarioTest!", salida);
+        Assert.Contains("Sesión activa: UsuarioTest", salida);
+        Assert.Contains("GESTIÓN DE SOLICITUDES DE PRÉSTAMO", salida);
     }
 }
