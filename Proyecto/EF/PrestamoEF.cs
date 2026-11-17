@@ -203,7 +203,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                 .Include(p => p.FkusuarioNavigation)
                 .Include(p => p.FkejemplarNavigation)
                     .ThenInclude(e => e.FkmaterialBibliotecaNavigation)
-                .Include(p => p.FkestadoPrestamo)
+                .Include(p => p.FkestadoPrestamoNavigation)
                 .Where(p => p.FkestadoPrestamo == 2)
                 .OrderBy(p => p.IdPrestamo)
                 .ToListAsync();

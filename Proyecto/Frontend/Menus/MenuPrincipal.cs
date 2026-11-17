@@ -42,7 +42,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                 {
                     switch (opcion)
                     {
-                        case "1": await MenuEmpleados.Menu(); break;
+                        case "1": await MenuAdministrador.Menu(); break;
                         case "2": 
                                 usuarioLogueado = await GestionLogin.LoginAsync(); break;
                         case "3":
