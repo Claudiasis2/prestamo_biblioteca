@@ -5,7 +5,7 @@ Material de prestamo (Segunda fase)
 Claudia, Francisco y Jordi
 
 ### Fecha última actualización
-12/11/2026
+17/11/2026
 
 ### Diseño
 Enlace para Figma: https://www.figma.com/design/UWQk5lDH94CnLBX69yl5fe/PrestamoBiblioteca?node-id=0-1&t=eEGrRcWuSFJ4yIzW-1
