@@ -1,0 +1,75 @@
+
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: "TestPassword123!Secure"
+        ports:
+          - 1433:1433
+
+    env:
+      MSSQL_SA_PASSWORD: "TestPassword123!Secure"
+      MATERIAL_PRESTAMO_CONNECTION: "Server=localhost,1433;Database=MaterialPrestamo_Test;User ID=sa;Password=TestPassword123!Secure;Encrypt=True;TrustServerCertificate=True;"
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Esperar a SQL Server
+        shell: bash
+        run: |
+          SQL_CONTAINER=$(docker ps -q --filter "ancestor=mcr.microsoft.com/mssql/server:2022-latest")
+
+          for i in {1..60}; do
+            if docker exec "$SQL_CONTAINER" /opt/mssql-tools18/bin/sqlcmd \
+              -C -S localhost -U sa -P "$MSSQL_SA_PASSWORD" \
+              -Q "SELECT 1" > /dev/null 2>&1; then
+              echo "SQL Server está listo."
+              exit 0
+            fi
+            echo "Esperando SQL Server..."
+            sleep 5
+          done
+
+          echo "SQL Server no arrancó."
+          exit 1
+
+      - name: Crear base de datos de pruebas
+        run: |
+          SQL_CONTAINER=$(docker ps -q --filter "ancestor=mcr.microsoft.com/mssql/server:2022-latest")
+
+          docker exec "$SQL_CONTAINER" /opt/mssql-tools18/bin/sqlcmd \
+            -C -S localhost -U sa -P "$MSSQL_SA_PASSWORD" \
+            -Q "CREATE DATABASE MaterialPrestamo_Test"
+
+      - name: Crear tablas
+        run: |
+          SQL_CONTAINER=$(docker ps -q --filter "ancestor=mcr.microsoft.com/mssql/server:2022-latest")
+
+          docker cp MaterialPrestamo_Test.sql "$SQL_CONTAINER:/tmp/MaterialPrestamo_Test.sql"
+
+          docker exec "$SQL_CONTAINER" /opt/mssql-tools18/bin/sqlcmd \
+            -C -b -S localhost -U sa -P "$MSSQL_SA_PASSWORD" \
+            -i /tmp/MaterialPrestamo_Test.sql
+
+      - name: Restaurar dependencias
+        run: dotnet restore Proyecto.Tests/Proyecto.Tests.csproj
+
+      - name: Ejecutar pruebas
+        run: dotnet test Proyecto.Tests/Proyecto.Tests.csproj --no-restore --verbosity normal
