@@ -71,5 +71,6 @@ jobs:
       - name: Restaurar dependencias
         run: dotnet restore Proyecto.Tests/Proyecto.Tests.csproj
 
-      - name: Ejecutar pruebas
-        run: dotnet test Proyecto.Tests/Proyecto.Tests.csproj --no-restore --verbosity normal
+      - name: Run tests
+        run: dotnet test Proyecto.Tests/Proyecto.Tests.csproj --no-restore --verbosity quiet --logger "console;verbosity=minimal"
+
