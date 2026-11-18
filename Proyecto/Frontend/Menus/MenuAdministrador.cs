@@ -38,19 +38,19 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                             break;
 
                         case "2":
-                            await GestionEmpleados.Menu();
+                            await GestionEmpleados.Menu(consola);
                             break;
 
                         case "3":
-                            await GestionEstadoEjemplares.Menu();
+                            await GestionEstadoEjemplares.Menu(consola);
                             break;
 
                         case "4":
-                            await GestionEstadoPrestamos.Menu();
+                            await GestionEstadoPrestamos.Menu(consola);
                             break;
 
                         case "5":
-                            await GestionEstadoSolicitudPrestamos.Menu();
+                            await GestionEstadoSolicitudPrestamos.Menu(consola);
                             break;
 
                         case "6":
@@ -69,19 +69,19 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                             break;
 
                         case "7":
-                            await GestionPrestamos.Menu();
+                            await GestionPrestamos.Menu(consola);
                             break;
 
                         case "8":
-                            await GestionMaterial.Menu();
+                            await GestionMaterial.Menu(consola);
                             break;
 
                         case "9":
-                            await GestionPrestamosAdmin.Menu();
+                            await GestionPrestamosAdmin.Menu(consola);
                             break;
 
                         case "10":
-                            await GestionSolicitudesAdmin.Menu();
+                            await GestionSolicitudesAdmin.Menu(consola);
                             break;
 
                         default:

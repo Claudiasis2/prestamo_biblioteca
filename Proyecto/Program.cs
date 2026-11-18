@@ -10,23 +10,24 @@ class Program
     public static async Task Main()
     {
         Env.Load();
+        IConsola consola = new ConsolaReal();
+
         try
         {
-            IConsola consola = new ConsolaReal();
             await MenuPrincipal.Menu(consola);
         }
         catch (ArgumentException ex)
         {
-            Console.WriteLine(ex.Message);
+            consola.Escribir(ex.Message);
         }
         catch (SqlException ex)
         {
-            Console.WriteLine("La operación SQL ha fallado.");
-            Console.WriteLine(ex.Message);
+            consola.Escribir("La operación SQL ha fallado.");
+            consola.Escribir(ex.Message);
         }
         catch (DbUpdateException)
         {
-            Console.WriteLine("No se pudieron guardar los cambios.");
+            consola.Escribir("No se pudieron guardar los cambios.");
         }
 
     }

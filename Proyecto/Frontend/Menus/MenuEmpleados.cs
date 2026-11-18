@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
     internal class MenuEmpleados
     {
-        static async public Task Menu()
+        public static async Task Menu(IConsola consola)
         {
-            Console.WriteLine("MENU DE EMPLEADOS");
-            Console.WriteLine("Pendiente de implementar...");
+            consola.Escribir("MENU DE EMPLEADOS\n");
+            consola.Escribir("Pendiente de implementar...\n");
 
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
+
+            await Task.CompletedTask;
         }
     }
 }

@@ -1,182 +1,191 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.EF;
 using ProyectoConjuntoMaterialPrestamo.Models;
 using ProyectoConjuntoMaterialPrestamo.Servicios;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Text;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     static class GestionMaterial
     {
-        static async public Task Menu()
+        public static async Task Menu(IConsola consola)
         {
             while (true)
             {
-                //Console.WriteLine($"Usando DB {Configuracion.ReturnDB()}");
-                Console.Clear();
-                Console.WriteLine("GESTION DE MATERIALES");
-                Console.WriteLine("1 Listar | 2 Listar por titulo | 3 Buscar | 4 Alta");
-                Console.WriteLine("5 Modificar | 6 Borrar | 0 Salir");
-                string opcion = LeerTexto("Opción: ");
+                consola.Limpiar();
+                consola.Escribir("GESTION DE MATERIALES\n");
+                consola.Escribir("1 Listar | 2 Listar por titulo | 3 Buscar | 4 Alta\n");
+                consola.Escribir("5 Modificar | 6 Borrar | 0 Salir\n");
+
+                string opcion = LeerTexto(consola, "Opción: ");
+
                 if (opcion == "0") break;
+
                 try
                 {
                     switch (opcion)
                     {
-                        case "1": await ListarAsync(); break;
-                        case "2": await ListarTituloAsync(); break;
-                        case "3": await BuscarAsync(); break;
-                        case "4": await InsertarAsync(); break;
-                        case "5": await ModificarAsync(); break;
-                        case "6": await BorrarAsync(); break;
+                        case "1": await ListarAsync(consola); break;
+                        case "2": await ListarTituloAsync(consola); break;
+                        case "3": await BuscarAsync(consola); break;
+                        case "4": await InsertarAsync(consola); break;
+                        case "5": await ModificarAsync(consola); break;
+                        case "6": await BorrarAsync(consola); break;
                         default:
-                            Console.WriteLine("Opción no válida.");
+                            consola.Escribir("Opción no válida.\n");
                             break;
                     }
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    consola.Escribir(ex.Message + "\n");
                 }
                 catch (SqlException ex)
                 {
-                    Console.WriteLine("La operación SQL ha fallado.");
-                    Console.WriteLine(ex.Message);
+                    consola.Escribir("La operación SQL ha fallado.\n");
+                    consola.Escribir(ex.Message + "\n");
                 }
                 catch (DbUpdateException)
                 {
-                    Console.WriteLine(
-                    "No se pudieron guardar los cambios.");
+                    consola.Escribir("No se pudieron guardar los cambios.\n");
                 }
             }
-        }    
-        static void Mostrar(MaterialBiblioteca e)
-        { 
-            Console.WriteLine(
-            $"{e.IdMaterial} | {e.Titulo}");
-            Console.WriteLine($"Año de Publicación: {e.AnioPublicacion}");
-            Console.WriteLine("==============================");
         }
 
-        static string LeerTexto(string mensaje)
+        static void Mostrar(MaterialBiblioteca e, IConsola consola)
         {
-            Console.Write(mensaje);
-            return Console.ReadLine()?.Trim() ?? "";
+            consola.Escribir($"{e.IdMaterial} | {e.Titulo}\n");
+            consola.Escribir($"Año de Publicación: {e.AnioPublicacion}\n");
+            consola.Escribir("==============================\n");
         }
-        static int LeerId()
+
+        static string LeerTexto(IConsola consola, string mensaje)
         {
-            if (!int.TryParse(LeerTexto("Id Material: "), out int id))
+            consola.Escribir(mensaje);
+            return consola.LeerTexto();
+        }
+
+        static int LeerId(IConsola consola)
+        {
+            if (!int.TryParse(LeerTexto(consola, "Id Material: "), out int id))
                 throw new ArgumentException("Escribe un entero.");
+
             return id;
         }
 
-        async static Task ListarAsync()
+        static async Task ListarAsync(IConsola consola)
         {
             var materiales = await MaterialBibliotecaServicio.ListarAsync();
-            foreach (var e in materiales) Mostrar(e);
 
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            foreach (var e in materiales)
+                Mostrar(e, consola);
 
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
         }
-        async static Task ListarTituloAsync()
+
+        static async Task ListarTituloAsync(IConsola consola)
         {
-            var titulo = LeerTexto("Titulo: ");
+            var titulo = LeerTexto(consola, "Titulo: ");
 
             var materiales = await MaterialBibliotecaServicio.ListarAsync();
             materiales = materiales.Where(m => m.Titulo.Contains(titulo)).ToList();
-            foreach (var e in materiales) Mostrar(e);
 
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            foreach (var e in materiales)
+                Mostrar(e, consola);
 
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
         }
-        async static Task BuscarAsync()
+
+        static async Task BuscarAsync(IConsola consola)
         {
-            var e = await MaterialBibliotecaServicio.BuscarAsync(LeerId());
+            var e = await MaterialBibliotecaServicio.BuscarAsync(LeerId(consola));
 
             if (e is null)
-            {
-                Console.WriteLine("No existe ese Id.");
+                consola.Escribir("No existe ese Id.\n");
+            else
+                Mostrar(e, consola);
 
-                Console.WriteLine("Pulsa una tecla para continuar...");
-                Console.ReadKey();
-            }
-            else Mostrar(e);
-
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
         }
 
-        async static Task InsertarAsync()
+        static async Task InsertarAsync(IConsola consola)
         {
             var e = new MaterialBiblioteca
             {
-
-                Titulo = LeerTexto("Titulo: "),
-                AnioPublicacion = (short) (int.TryParse(LeerTexto("Año Publicacion: "), out int anioPublicacion) ? anioPublicacion : 0)
-
+                Titulo = LeerTexto(consola, "Titulo: "),
+                AnioPublicacion = (short)(
+                    int.TryParse(LeerTexto(consola, "Año Publicacion: "), out int anioPublicacion)
+                    ? anioPublicacion
+                    : 0)
             };
 
             int id = await MaterialBibliotecaEF.InsertarAsync(e);
-            Console.WriteLine($"Material Biblioteca creado con Id {id}");
 
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir($"Material Biblioteca creado con Id {id}\n");
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
         }
 
-        async static Task ModificarAsync()
+        static async Task ModificarAsync(IConsola consola)
         {
-            var e = await MaterialBibliotecaServicio.BuscarAsync(LeerId());
+            var e = await MaterialBibliotecaServicio.BuscarAsync(LeerId(consola));
+
             if (e is null)
             {
-                Console.WriteLine("No existe ese Id.");
-                Console.WriteLine("Pulsa una tecla para continuar...");
-                Console.ReadKey();
+                consola.Escribir("No existe ese Id.\n");
+                consola.Escribir("Pulsa una tecla para continuar...\n");
+                consola.EsperarTecla();
                 return;
             }
 
-            Mostrar(e);
+            Mostrar(e, consola);
 
-            e.Titulo = LeerTexto("Nuevo Titulo: ");
-            e.AnioPublicacion = (short)(int.TryParse(LeerTexto("Nuevo Año Publicacion: "), out int anioPublicacion) ? anioPublicacion : 0);
+            e.Titulo = LeerTexto(consola, "Nuevo Titulo: ");
+            e.AnioPublicacion = (short)(
+                int.TryParse(LeerTexto(consola, "Nuevo Año Publicacion: "), out int anioPublicacion)
+                ? anioPublicacion
+                : 0);
 
             int id = await MaterialBibliotecaEF.ModificarAsync(e);
-            Console.WriteLine($"Material Biblioteca Id {id} modificado.");
 
-            Mostrar(e);
+            consola.Escribir($"Material Biblioteca Id {id} modificado.\n");
+            Mostrar(e, consola);
 
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
         }
 
-        async static Task BorrarAsync()
+        static async Task BorrarAsync(IConsola consola)
         {
-            int id = LeerId();
+            int id = LeerId(consola);
             var e = await MaterialBibliotecaServicio.BuscarAsync(id);
+
             if (e is null)
             {
-                Console.WriteLine("No existe ese Id.");
-                Console.WriteLine("Pulsa una tecla para continuar...");
-                Console.ReadKey();
+                consola.Escribir("No existe ese Id.\n");
+                consola.Escribir("Pulsa una tecla para continuar...\n");
+                consola.EsperarTecla();
                 return;
             }
-            Mostrar(e);
-            if (LeerTexto("¿Borrar este Material de Biblioteca? (S/N): ")
-            .ToUpperInvariant() != "S") return;
+
+            Mostrar(e, consola);
+
+            if (LeerTexto(consola, "¿Borrar este Material de Biblioteca? (S/N): ")
+                .ToUpperInvariant() != "S")
+                return;
 
             bool borrado = await MaterialBibliotecaServicio.BorrarAsync(id);
 
-            Console.WriteLine(borrado ? "Material Biblioteca borrado."
-            : "No se borró: ya no existe o tiene relaciones.");
-            Console.WriteLine("Pulsa una tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir(borrado
+                ? "Material Biblioteca borrado.\n"
+                : "No se borró: ya no existe o tiene relaciones.\n");
+
+            consola.Escribir("Pulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
         }
-        
     }
 }

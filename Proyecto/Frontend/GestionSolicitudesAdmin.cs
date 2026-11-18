@@ -1,25 +1,22 @@
+
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.Servicios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     public static class GestionSolicitudesAdmin
     {
-        public static async Task Menu()
+        public static async Task Menu(IConsola consola)
         {
             bool salir = false;
 
             while (!salir)
             {
-                Console.Clear();
-                Console.WriteLine("==================================================");
-                Console.WriteLine("       REVISIÓN Y GESTIÓN DE SOLICITUDES          ");
-                Console.WriteLine("==================================================");
+                consola.Limpiar();
+                consola.Escribir("==================================================\n");
+                consola.Escribir("       REVISIÓN Y GESTIÓN DE SOLICITUDES          \n");
+                consola.Escribir("==================================================\n");
 
                 try
                 {
@@ -27,118 +24,127 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
 
                     if (!pendientes.Any())
                     {
-                        Console.WriteLine("\n[INFORMACIÓN] No hay solicitudes pendientes de revisión.");
+                        consola.Escribir("\n[INFORMACIÓN] No hay solicitudes pendientes de revisión.\n");
                     }
                     else
                     {
-                        Console.WriteLine($"Solicitudes pendientes de atención: {pendientes.Count}\n");
-                        Console.WriteLine("ID Sol. | Fecha               | Usuario                        | Material");
-                        Console.WriteLine("----------------------------------------------------------------------------------");
+                        consola.Escribir($"Solicitudes pendientes de atención: {pendientes.Count}\n\n");
+                        consola.Escribir("ID Sol. | Fecha               | Usuario                        | Material\n");
+                        consola.Escribir("----------------------------------------------------------------------------------\n");
+
                         foreach (var s in pendientes)
                         {
-                            string usuario = s.FkusuarioNavigation != null ? $"{s.FkusuarioNavigation.NombreUsuario} {s.FkusuarioNavigation.PrimerApellido}".Trim() : $"Usuario #{s.Fkusuario}";
+                            string usuario = s.FkusuarioNavigation != null
+                                ? $"{s.FkusuarioNavigation.NombreUsuario} {s.FkusuarioNavigation.PrimerApellido}".Trim()
+                                : $"Usuario #{s.Fkusuario}";
+
                             string titulo = s.FkmaterialBibliotecaNavigation?.Titulo ?? "Material Desconocido";
-                            Console.WriteLine($"{s.IdSolicitud,-7} | {s.FechaSolicitud:dd/MM/yyyy HH:mm} | {usuario,-30} | {titulo}");
+
+                            consola.Escribir($"{s.IdSolicitud,-7} | {s.FechaSolicitud:dd/MM/yyyy HH:mm} | {usuario,-30} | {titulo}\n");
                         }
                     }
 
-                    Console.WriteLine("--------------------------------------------------");
-                    Console.WriteLine("1. Aprobar solicitud");
-                    Console.WriteLine("2. Rechazar solicitud");
-                    Console.WriteLine("0. Volver al menú anterior");
-                    Console.WriteLine("--------------------------------------------------");
-                    Console.Write("Seleccione una opción: ");
+                    consola.Escribir("--------------------------------------------------\n");
+                    consola.Escribir("1. Aprobar solicitud\n");
+                    consola.Escribir("2. Rechazar solicitud\n");
+                    consola.Escribir("0. Volver al menú anterior\n");
+                    consola.Escribir("--------------------------------------------------\n");
+                    consola.Escribir("Seleccione una opción: ");
 
-                    string opcion = Console.ReadLine()?.Trim() ?? string.Empty;
+                    string opcion = consola.LeerTexto();
 
                     switch (opcion)
                     {
                         case "1":
-                            await ProcesarAprobacionAsync();
+                            await ProcesarAprobacionAsync(consola);
                             break;
                         case "2":
-                            await ProcesarRechazoAsync();
+                            await ProcesarRechazoAsync(consola);
                             break;
                         case "0":
                             salir = true;
                             break;
                         default:
-                            Console.WriteLine("\nOpción no válida. Presione cualquier tecla para continuar...");
-                            Console.ReadKey();
+                            consola.Escribir("\nOpción no válida. Presione cualquier tecla para continuar...\n");
+                            consola.EsperarTecla();
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"\nOcurrió un inconveniente: {ex.Message}");
-                    Console.WriteLine("Presione cualquier tecla para reintentar...");
-                    Console.ReadKey();
+                    consola.Escribir($"\nOcurrió un inconveniente: {ex.Message}\n");
+                    consola.Escribir("Presione cualquier tecla para reintentar...\n");
+                    consola.EsperarTecla();
                 }
             }
         }
 
-        private static async Task ProcesarAprobacionAsync()
+        private static async Task ProcesarAprobacionAsync(IConsola consola)
         {
-            Console.Write("\nIngrese el ID de la solicitud a APROBAR: ");
-            if (!int.TryParse(Console.ReadLine(), out int idSolicitud) || idSolicitud <= 0)
+            consola.Escribir("\nIngrese el ID de la solicitud a APROBAR: ");
+
+            if (!int.TryParse(consola.LeerTexto(), out int idSolicitud) || idSolicitud <= 0)
             {
-                Console.WriteLine("[ERROR] Debe ingresar un número entero positivo.");
-                Console.ReadKey();
+                consola.Escribir("[ERROR] Debe ingresar un número entero positivo.\n");
+                consola.EsperarTecla();
                 return;
             }
 
             try
             {
                 await SolicitudPrestamoServicio.AprobarSolicitudAsync(idSolicitud);
-                Console.WriteLine($"\n[ÉXITO] La solicitud #{idSolicitud} ha sido APROBADA correctamente.");
+
+                consola.Escribir($"\n[ÉXITO] La solicitud #{idSolicitud} ha sido APROBADA correctamente.\n");
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"\n[REGLA DE NEGOCIO] {ex.Message}");
+                consola.Escribir($"\n[REGLA DE NEGOCIO] {ex.Message}\n");
             }
             catch (DbUpdateException)
             {
-                Console.WriteLine("\n[ERROR BASE DE DATOS] No se pudo actualizar el estado de la solicitud.");
+                consola.Escribir("\n[ERROR BASE DE DATOS] No se pudo actualizar el estado de la solicitud.\n");
             }
             catch (SqlException)
             {
-                Console.WriteLine("\n[ERROR DE CONEXIÓN] Fallo de comunicación con SQL Server.");
+                consola.Escribir("\n[ERROR DE CONEXIÓN] Fallo de comunicación con SQL Server.\n");
             }
 
-            Console.WriteLine("Presione cualquier tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir("Presione cualquier tecla para continuar...\n");
+            consola.EsperarTecla();
         }
 
-        private static async Task ProcesarRechazoAsync()
+        private static async Task ProcesarRechazoAsync(IConsola consola)
         {
-            Console.Write("\nIngrese el ID de la solicitud a RECHAZAR: ");
-            if (!int.TryParse(Console.ReadLine(), out int idSolicitud) || idSolicitud <= 0)
+            consola.Escribir("\nIngrese el ID de la solicitud a RECHAZAR: ");
+
+            if (!int.TryParse(consola.LeerTexto(), out int idSolicitud) || idSolicitud <= 0)
             {
-                Console.WriteLine("[ERROR] Debe ingresar un número entero positivo.");
-                Console.ReadKey();
+                consola.Escribir("[ERROR] Debe ingresar un número entero positivo.\n");
+                consola.EsperarTecla();
                 return;
             }
 
             try
             {
                 await SolicitudPrestamoServicio.RechazarSolicitudAsync(idSolicitud);
-                Console.WriteLine($"\n[ÉXITO] La solicitud #{idSolicitud} ha sido RECHAZADA. El cupo del usuario se ha liberado.");
+
+                consola.Escribir($"\n[ÉXITO] La solicitud #{idSolicitud} ha sido RECHAZADA. El cupo del usuario se ha liberado.\n");
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"\n[REGLA DE NEGOCIO] {ex.Message}");
+                consola.Escribir($"\n[REGLA DE NEGOCIO] {ex.Message}\n");
             }
             catch (DbUpdateException)
             {
-                Console.WriteLine("\n[ERROR BASE DE DATOS] No se pudo actualizar el estado de la solicitud.");
+                consola.Escribir("\n[ERROR BASE DE DATOS] No se pudo actualizar el estado de la solicitud.\n");
             }
             catch (SqlException)
             {
-                Console.WriteLine("\n[ERROR DE CONEXIÓN] Fallo de comunicación con SQL Server.");
+                consola.Escribir("\n[ERROR DE CONEXIÓN] Fallo de comunicación con SQL Server.\n");
             }
 
-            Console.WriteLine("Presione cualquier tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir("Presione cualquier tecla para continuar...\n");
+            consola.EsperarTecla();
         }
     }
 }
