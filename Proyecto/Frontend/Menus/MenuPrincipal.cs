@@ -27,6 +27,11 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                     );
                     consola.Escribir("--------------------------------------------------\n");
                 }
+                else
+                {
+                    Console.WriteLine(" [No hay sesión de usuario activa]");
+                    Console.WriteLine("--------------------------------------------------");
+                }
 
                 consola.Escribir("1. Menú Administrador\n");
                 consola.Escribir("2. Perfil Usuario\n");
