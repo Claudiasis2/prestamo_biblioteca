@@ -8,7 +8,7 @@ public class MenuPrincipalTests
 	public async Task Menu_SinSesion_NoPermiteAccederASolicitudes()
 	{
 		// Arrange
-		var consola = new ConsolaFalsa("4", "0");
+		var consola = new ConsolaFalsa("3", "0");
 
 		// Act
 		await MenuPrincipal.Menu(consola);

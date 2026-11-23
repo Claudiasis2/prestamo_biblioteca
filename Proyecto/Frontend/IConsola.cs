@@ -7,5 +7,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
         void Escribir(string texto);
         void Limpiar();
         void EsperarTecla();
+        
     }
 }

@@ -7,10 +7,27 @@ using ProyectoConjuntoMaterialPrestamo.Models;
 
 class Program
 {
+    public static void Cargar()
+    {
+        var directorio = new DirectoryInfo(AppContext.BaseDirectory);
+
+        while (directorio != null &&
+               !File.Exists(Path.Combine(directorio.FullName, ".env")))
+        {
+            directorio = directorio.Parent;
+        }
+
+        if (directorio == null)
+            throw new FileNotFoundException("No se encontró el archivo .env");
+
+        Env.Load(Path.Combine(directorio.FullName, ".env"));
+    }
+
     public static async Task Main()
     {
-        Env.Load();
+        Cargar();
         IConsola consola = new ConsolaReal();
+        
 
         try
         {

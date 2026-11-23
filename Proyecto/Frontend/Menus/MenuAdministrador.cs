@@ -11,7 +11,9 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
             while (true)
             {
                 consola.Limpiar();
-
+                consola.Escribir("==================================================\n");
+                consola.Escribir(" MENU DE ADMINISTRADOR ");
+                consola.Escribir("==================================================\n");
                 consola.Escribir("1. Gestión de Usuarios\n");
                 consola.Escribir("2. Gestión de empleados\n");
                 consola.Escribir("3. Gestión de estados de ejemplar\n");
@@ -25,7 +27,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                 consola.Escribir("10. Gestión de solicitudes de préstamo de materiales\n");
                 consola.Escribir("0. SALIR\n");
 
-                string opcion = LeerTexto(consola, "Opción: ");
+                string opcion = consola.LeerTexto();
 
                 if (opcion == "0") break;
 
@@ -55,7 +57,7 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 
                         case "6":
                             bool convertido = int.TryParse(
-                                LeerTexto(consola, "Id del usuario: "),
+                                consola.LeerTexto(),
                                 out int idUsuario
                             );
 
@@ -103,12 +105,6 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
                     consola.Escribir("No se pudieron guardar los cambios.\n");
                 }
             }
-        }
-
-        private static string LeerTexto(IConsola consola, string mensaje)
-        {
-            consola.Escribir(mensaje);
-            return consola.LeerTexto();
         }
     }
 }
