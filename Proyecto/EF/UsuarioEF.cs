@@ -145,7 +145,7 @@ public static class UsuarioEF
         }
     }
 
-    public static async Task<Usuario> LoginAsync(string Email, string Password)
+    public static async Task<Usuario?> LoginAsync(string Email, string Password)
     {
         try 
         { 

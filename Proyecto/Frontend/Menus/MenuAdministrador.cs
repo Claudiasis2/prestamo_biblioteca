@@ -1,86 +1,110 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using ProyectoConjuntoMaterialPrestamo.EF;
-using ProyectoConjuntoMaterialPrestamo.Models;
-using ProyectoConjuntoMaterialPrestamo.Servicios;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend.Menus
 {
     internal class MenuAdministrador
     {
-        static async public Task Menu()
+        public static async Task Menu(IConsola consola)
         {
             while (true)
             {
-                Console.Clear();
-                Console.WriteLine("==================================================");
-                Console.WriteLine(" MENU DE ADMINISTRADOR ");
-                Console.WriteLine("==================================================");
-                Console.WriteLine("1. Gestión de Usuarios");
-                Console.WriteLine("2. Gestión de empleados");
-                Console.WriteLine("3. Gestión de estados de ejemplar");
-                Console.WriteLine("4. Gestión de estados de préstamo");
-                Console.WriteLine("5. Gestión de estados de solicitud de préstamo");
-                Console.WriteLine("6. Gestión de solicitudes de préstamo");
-                Console.WriteLine("7. Gestión de préstamos");
-                Console.WriteLine("8. Gestión de materiales");
-                Console.WriteLine("=====================================================");
-                Console.WriteLine("9. Gestión de recepción de préstamo de materiales");
-                Console.WriteLine("10. Gestión de solicitudes de préstamo de materiales");
-                Console.WriteLine("0. SALIR");
-                string opcion = LeerTexto("Opción: ");
+                consola.Limpiar();
+                consola.Escribir("==================================================\n");
+                consola.Escribir(" MENU DE ADMINISTRADOR ");
+                consola.Escribir("==================================================\n");
+                consola.Escribir("1. Gestión de Usuarios\n");
+                consola.Escribir("2. Gestión de empleados\n");
+                consola.Escribir("3. Gestión de estados de ejemplar\n");
+                consola.Escribir("4. Gestión de estados de préstamo\n");
+                consola.Escribir("5. Gestión de estados de solicitud de préstamo\n");
+                consola.Escribir("6. Gestión de solicitudes de préstamo\n");
+                consola.Escribir("7. Gestión de préstamos\n");
+                consola.Escribir("8. Gestión de materiales\n");
+                consola.Escribir("=====================================================\n");
+                consola.Escribir("9. Gestión de recepción de préstamo de materiales\n");
+                consola.Escribir("10. Gestión de solicitudes de préstamo de materiales\n");
+                consola.Escribir("0. SALIR\n");
+
+                string opcion = consola.LeerTexto();
+
                 if (opcion == "0") break;
+
                 try
                 {
                     switch (opcion)
                     {
-                        case "1": await GestionUsuario.Menu(); break;
-                        case "2": await GestionEmpleados.Menu(); break;
-                        case "3": await GestionEstadoEjemplares.Menu(); break;
-                        case "4": await GestionEstadoPrestamos.Menu(); break;
-                        case "5": await GestionEstadoSolicitudPrestamos.Menu(); break;
+                        case "1":
+                            await GestionUsuario.Menu(consola);
+                            break;
+
+                        case "2":
+                            await GestionEmpleados.Menu(consola);
+                            break;
+
+                        case "3":
+                            await GestionEstadoEjemplares.Menu(consola);
+                            break;
+
+                        case "4":
+                            await GestionEstadoPrestamos.Menu(consola);
+                            break;
+
+                        case "5":
+                            await GestionEstadoSolicitudPrestamos.Menu(consola);
+                            break;
+
                         case "6":
-                            bool convertido = int.TryParse(LeerTexto("Id del usuario: "), out int idUsuario);
+                            bool convertido = int.TryParse(
+                                consola.LeerTexto(),
+                                out int idUsuario
+                            );
+
                             if (!convertido)
                             {
-                                Console.WriteLine("Id de usuario no válido.");
+                                consola.Escribir("Id de usuario no válido.\n");
                                 continue;
                             }
-                            await GestionSolicitudesPrestamos.Menu(idUsuario); break;
-                        case "7": await GestionPrestamos.Menu(); break;
-                        case "8": await GestionMaterial.Menu(); break;
-                        case "9": await GestionPrestamosAdmin.Menu(); break;
-                        case "10": await GestionSolicitudesAdmin.Menu(); break;
+
+                            await GestionSolicitudesPrestamos.Menu(idUsuario, consola);
+                            break;
+
+                        case "7":
+                            await GestionPrestamos.Menu(consola);
+                            break;
+
+                        case "8":
+                            await GestionMaterial.Menu(consola);
+                            break;
+
+                        case "9":
+                            await GestionPrestamosAdmin.Menu(consola);
+                            break;
+
+                        case "10":
+                            await GestionSolicitudesAdmin.Menu(consola);
+                            break;
 
                         default:
-                            Console.WriteLine("Opción no válida.");
+                            consola.Escribir("Opción no válida.\n");
                             break;
                     }
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    consola.Escribir(ex.Message + "\n");
                 }
                 catch (SqlException ex)
                 {
-                    Console.WriteLine("La operación SQL ha fallado.");
-                    Console.WriteLine(ex.Message);
+                    consola.Escribir("La operación SQL ha fallado.\n");
+                    consola.Escribir(ex.Message + "\n");
                 }
                 catch (DbUpdateException)
                 {
-                    Console.WriteLine(
-                    "No se pudieron guardar los cambios.");
+                    consola.Escribir("No se pudieron guardar los cambios.\n");
                 }
             }
-        }
-
-        static string LeerTexto(string mensaje)
-        {
-            Console.Write(mensaje);
-            return Console.ReadLine()?.Trim() ?? "";
         }
     }
 }

@@ -1,87 +1,84 @@
+
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProyectoConjuntoMaterialPrestamo.Servicios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     public static class GestionPrestamosAdmin
     {
-        public static async Task Menu()
+        public static async Task Menu(IConsola consola)
         {
             bool salir = false;
 
             while (!salir)
             {
-                Console.Clear();
-                Console.WriteLine("==================================================");
-                Console.WriteLine("      GESTIÓN DE PRÉSTAMOS Y DEVOLUCIONES         ");
-                Console.WriteLine("==================================================");
-                Console.WriteLine("1. Registrar entrega de material (Crear Préstamo)");
-                Console.WriteLine("2. Registrar devolución de material");
-                Console.WriteLine("3. Ver préstamos activos");
-                Console.WriteLine("0. Volver al menú anterior");
-                Console.WriteLine("--------------------------------------------------");
-                Console.Write("Seleccione una opción: ");
+                consola.Limpiar();
+                consola.Escribir("==================================================\n");
+                consola.Escribir("      GESTIÓN DE PRÉSTAMOS Y DEVOLUCIONES         \n");
+                consola.Escribir("==================================================\n");
+                consola.Escribir("1. Registrar entrega de material (Crear Préstamo)\n");
+                consola.Escribir("2. Registrar devolución de material\n");
+                consola.Escribir("3. Ver préstamos activos\n");
+                consola.Escribir("0. Volver al menú anterior\n");
+                consola.Escribir("--------------------------------------------------\n");
+                consola.Escribir("Seleccione una opción: ");
 
-                string opcion = Console.ReadLine()?.Trim() ?? string.Empty;
+                string opcion = consola.LeerTexto();
 
                 try
                 {
                     switch (opcion)
                     {
                         case "1":
-                            await RegistrarEntregaAsync();
+                            await RegistrarEntregaAsync(consola);
                             break;
                         case "2":
-                            await RegistrarDevolucionAsync();
+                            await RegistrarDevolucionAsync(consola);
                             break;
                         case "3":
-                            await VerPrestamosActivosAsync();
+                            await VerPrestamosActivosAsync(consola);
                             break;
                         case "0":
                             salir = true;
                             break;
                         default:
-                            Console.WriteLine("\nOpción no válida. Presione cualquier tecla para continuar...");
-                            Console.ReadKey();
+                            consola.Escribir("\nOpción no válida. Presione cualquier tecla para continuar...\n");
+                            consola.EsperarTecla();
                             break;
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"\nOcurrió un inconveniente: {ex.Message}");
-                    Console.WriteLine("Presione cualquier tecla para reintentar...");
-                    Console.ReadKey();
+                    consola.Escribir($"\nOcurrió un inconveniente: {ex.Message}\n");
+                    consola.Escribir("Presione cualquier tecla para reintentar...\n");
+                    consola.EsperarTecla();
                 }
             }
         }
 
-        private static async Task RegistrarEntregaAsync()
+        private static async Task RegistrarEntregaAsync(IConsola consola)
         {
-            Console.Clear();
-            Console.WriteLine("==================================================");
-            Console.WriteLine("       REGISTRAR ENTREGA DE MATERIAL FISICO       ");
-            Console.WriteLine("==================================================");
+            consola.Limpiar();
+            consola.Escribir("==================================================\n");
+            consola.Escribir("       REGISTRAR ENTREGA DE MATERIAL FISICO       \n");
+            consola.Escribir("==================================================\n");
 
-            
             var aprobadas = await PrestamoServicio.ListarSolicitudesAprobadasSinEntregarAsync();
-            
+
             if (!aprobadas.Any())
             {
-                Console.WriteLine("\n[INFORMACIÓN] No existen solicitudes aprobadas pendientes de entregar.");
-                Console.WriteLine("Presione cualquier tecla para retornar...");
-                Console.ReadKey();
+                consola.Escribir("\n[INFORMACIÓN] No existen solicitudes aprobadas pendientes de entregar.\n");
+                consola.Escribir("Presione cualquier tecla para retornar...\n");
+                consola.EsperarTecla();
                 return;
             }
 
-            Console.WriteLine("SOLICITUDES APROBADAS EN ESPERA DE ENTREGA:");
-            Console.WriteLine("----------------------------------------------------------------------------------");
-            Console.WriteLine("ID Sol. | Fecha Solicitud   | Usuario                        | Material");
-            Console.WriteLine("----------------------------------------------------------------------------------");
+            consola.Escribir("SOLICITUDES APROBADAS EN ESPERA DE ENTREGA:\n");
+            consola.Escribir("----------------------------------------------------------------------------------\n");
+            consola.Escribir("ID Sol. | Fecha Solicitud   | Usuario                        | Material\n");
+            consola.Escribir("----------------------------------------------------------------------------------\n");
+
             foreach (var s in aprobadas)
             {
                 string usuario = s.FkusuarioNavigation != null
@@ -89,80 +86,88 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                     : $"Usuario #{s.Fkusuario}";
 
                 string titulo = s.FkmaterialBibliotecaNavigation?.Titulo ?? "Material Desconocido";
-                Console.WriteLine($"{s.IdSolicitud,-7} | {s.FechaSolicitud:dd/MM/yyyy HH:mm} | {usuario,-30} | {titulo}");
-            }
-            Console.WriteLine("----------------------------------------------------------------------------------");
 
-            Console.Write("\nIngrese el ID de la solicitud a entregar: ");
-            if (!int.TryParse(Console.ReadLine(), out int idSolicitud) || idSolicitud <= 0)
+                consola.Escribir($"{s.IdSolicitud,-7} | {s.FechaSolicitud:dd/MM/yyyy HH:mm} | {usuario,-30} | {titulo}\n");
+            }
+
+            consola.Escribir("----------------------------------------------------------------------------------\n");
+
+            consola.Escribir("\nIngrese el ID de la solicitud a entregar: ");
+
+            if (!int.TryParse(consola.LeerTexto(), out int idSolicitud) || idSolicitud <= 0)
             {
-                Console.WriteLine("[ERROR] Debe ingresar un número entero positivo.");
-                Console.ReadKey();
+                consola.Escribir("[ERROR] Debe ingresar un número entero positivo.\n");
+                consola.EsperarTecla();
                 return;
             }
 
-            Console.Write("Ingrese la cantidad de días de préstamo (Presione ENTER para usar 7 días): ");
-            string entradaDias = Console.ReadLine()?.Trim() ?? string.Empty;
+            consola.Escribir("Ingrese la cantidad de días de préstamo (Presione ENTER para usar 7 días): ");
+            string entradaDias = consola.LeerTexto();
+
             int diasPrestamo = 7;
-            if (!string.IsNullOrEmpty(entradaDias) && int.TryParse(entradaDias, out int d) && d > 0)
+
+            if (!string.IsNullOrEmpty(entradaDias) &&
+                int.TryParse(entradaDias, out int d) && d > 0)
             {
                 diasPrestamo = d;
             }
 
             try
             {
-                Console.WriteLine("\nAsignando ejemplar disponible y registrando préstamo...");
+                consola.Escribir("\nAsignando ejemplar disponible y registrando préstamo...\n");
+
                 int idPrestamo = await PrestamoServicio.CrearPrestamoAsync(idSolicitud, diasPrestamo);
 
-                Console.WriteLine("\n==================================================");
-                Console.WriteLine("        ¡PRÉSTAMO REGISTRADO CON ÉXITO!");
-                Console.WriteLine("==================================================");
-                Console.WriteLine($"Folio de préstamo generado: #{idPrestamo}");
-                Console.WriteLine($"Plazo de devolución esperada: {diasPrestamo} días ({DateTime.Now.AddDays(diasPrestamo):dd/MM/yyyy})");
-                Console.WriteLine("El ejemplar físico fue marcado como PRESTADO en estantería.");
+                consola.Escribir("\n==================================================\n");
+                consola.Escribir("        ¡PRÉSTAMO REGISTRADO CON ÉXITO!\n");
+                consola.Escribir("==================================================\n");
+                consola.Escribir($"Folio de préstamo generado: #{idPrestamo}\n");
+                consola.Escribir($"Plazo de devolución esperada: {diasPrestamo} días ({DateTime.Now.AddDays(diasPrestamo):dd/MM/yyyy})\n");
+                consola.Escribir("El ejemplar físico fue marcado como PRESTADO en estantería.\n");
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"\n[REGLA DE NEGOCIO] {ex.Message}");
+                consola.Escribir($"\n[REGLA DE NEGOCIO] {ex.Message}\n");
             }
             catch (InvalidOperationException ex)
             {
-                Console.WriteLine($"\n[DISPONIBILIDAD] {ex.Message}");
+                consola.Escribir($"\n[DISPONIBILIDAD] {ex.Message}\n");
             }
             catch (DbUpdateException)
             {
-                Console.WriteLine("\n[ERROR BASE DE DATOS] No se pudo guardar la transacción de préstamo.");
+                consola.Escribir("\n[ERROR BASE DE DATOS] No se pudo guardar la transacción de préstamo.\n");
             }
             catch (SqlException)
             {
-                Console.WriteLine("\n[ERROR CONEXIÓN] Fallo de comunicación con SQL Server.");
+                consola.Escribir("\n[ERROR CONEXIÓN] Fallo de comunicación con SQL Server.\n");
             }
-            
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
+
+            consola.Escribir("\nPresione cualquier tecla para continuar...\n");
+            consola.EsperarTecla();
         }
 
-        private static async Task RegistrarDevolucionAsync()
+        private static async Task RegistrarDevolucionAsync(IConsola consola)
         {
-            Console.Clear();
-            Console.WriteLine("==================================================");
-            Console.WriteLine("            REGISTRAR DEVOLUCIÓN FÍSICA           ");
-            Console.WriteLine("==================================================");
+            consola.Limpiar();
+            consola.Escribir("==================================================\n");
+            consola.Escribir("            REGISTRAR DEVOLUCIÓN FÍSICA           \n");
+            consola.Escribir("==================================================\n");
 
             var activos = await PrestamoServicio.ListarPrestamosActivosAsync();
 
             if (!activos.Any())
             {
-                Console.WriteLine("\n[INFORMACIÓN] No hay préstamos activos en este momento.");
-                Console.WriteLine("Presione cualquier tecla para retornar...");
-                Console.ReadKey();
+                consola.Escribir("\n[INFORMACIÓN] No hay préstamos activos en este momento.\n");
+                consola.Escribir("Presione cualquier tecla para retornar...\n");
+                consola.EsperarTecla();
                 return;
             }
 
-            Console.WriteLine("PRÉSTAMOS ACTIVOS EN CIRCULACIÓN:");
-            Console.WriteLine("----------------------------------------------------------------------------------");
-            Console.WriteLine("ID Préstamo | Ejemplar | Usuario                        | F. Límite   | Material");
-            Console.WriteLine("----------------------------------------------------------------------------------");
+            consola.Escribir("PRÉSTAMOS ACTIVOS EN CIRCULACIÓN:\n");
+            consola.Escribir("----------------------------------------------------------------------------------\n");
+            consola.Escribir("ID Préstamo | Ejemplar | Usuario                        | F. Límite   | Material\n");
+            consola.Escribir("----------------------------------------------------------------------------------\n");
+
             foreach (var p in activos)
             {
                 string usuario = p.FkusuarioNavigation != null
@@ -172,68 +177,72 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                 string titulo = p.FkejemplarNavigation?.FkmaterialBibliotecaNavigation?.Titulo ?? "Material Desconocido";
                 int idEjemplar = p.FkejemplarNavigation?.IdEjemplar ?? 0;
 
-                Console.WriteLine($"{p.IdPrestamo,-11} | #{idEjemplar,-7} | {usuario,-30} | {p.FechaLimiteDevolucion:dd/MM/yyyy} | {titulo}");
+                consola.Escribir($"{p.IdPrestamo,-11} | #{idEjemplar,-7} | {usuario,-30} | {p.FechaLimiteDevolucion:dd/MM/yyyy} | {titulo}\n");
             }
-            Console.WriteLine("----------------------------------------------------------------------------------");
 
-            Console.Write("\nIngrese el ID del préstamo a DEVOLVER: ");
-            if (!int.TryParse(Console.ReadLine(), out int idPrestamo) || idPrestamo <= 0)
+            consola.Escribir("----------------------------------------------------------------------------------\n");
+
+            consola.Escribir("\nIngrese el ID del préstamo a DEVOLVER: ");
+
+            if (!int.TryParse(consola.LeerTexto(), out int idPrestamo) || idPrestamo <= 0)
             {
-                Console.WriteLine("[ERROR] Debe ingresar un número entero positivo.");
-                Console.ReadKey();
+                consola.Escribir("[ERROR] Debe ingresar un número entero positivo.\n");
+                consola.EsperarTecla();
                 return;
             }
 
             try
             {
-                Console.WriteLine("\nProcesando devolución y liberando ejemplar...");
+                consola.Escribir("\nProcesando devolución y liberando ejemplar...\n");
+
                 await PrestamoServicio.RegistrarDevolucionAsync(idPrestamo);
 
-                Console.WriteLine("\n==================================================");
-                Console.WriteLine("       ¡DEVOLUCIÓN REGISTRADA CON ÉXITO!");
-                Console.WriteLine("==================================================");
-                Console.WriteLine($"Préstamo #{idPrestamo} marcado como DEVUELTO / FINALIZADO.");
-                Console.WriteLine("El ejemplar físico ha retornado al estado DISPONIBLE en estantería.");
-                Console.WriteLine("El cupo del usuario se ha liberado.");
+                consola.Escribir("\n==================================================\n");
+                consola.Escribir("       ¡DEVOLUCIÓN REGISTRADA CON ÉXITO!\n");
+                consola.Escribir("==================================================\n");
+                consola.Escribir($"Préstamo #{idPrestamo} marcado como DEVUELTO / FINALIZADO.\n");
+                consola.Escribir("El ejemplar físico ha retornado al estado DISPONIBLE en estantería.\n");
+                consola.Escribir("El cupo del usuario se ha liberado.\n");
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"\n[REGLA DE NEGOCIO] {ex.Message}");
+                consola.Escribir($"\n[REGLA DE NEGOCIO] {ex.Message}\n");
             }
             catch (InvalidOperationException ex)
             {
-                Console.WriteLine($"\n[ESTADO] {ex.Message}");
+                consola.Escribir($"\n[ESTADO] {ex.Message}\n");
             }
             catch (DbUpdateException)
             {
-                Console.WriteLine("\n[ERROR BASE DE DATOS] No se pudo guardar la devolución.");
+                consola.Escribir("\n[ERROR BASE DE DATOS] No se pudo guardar la devolución.\n");
             }
             catch (SqlException)
             {
-                Console.WriteLine("\n[ERROR CONEXIÓN] Inconveniente de comunicación con SQL Server.");
+                consola.Escribir("\n[ERROR CONEXIÓN] Inconveniente de comunicación con SQL Server.\n");
             }
 
-            Console.WriteLine("\nPresione cualquier tecla para continuar...");
-            Console.ReadKey();
+            consola.Escribir("\nPresione cualquier tecla para continuar...\n");
+            consola.EsperarTecla();
         }
 
-        private static async Task VerPrestamosActivosAsync()
+        private static async Task VerPrestamosActivosAsync(IConsola consola)
         {
-            Console.Clear();
-            Console.WriteLine("==================================================");
-            Console.WriteLine("             LISTADO DE PRÉSTAMOS ACTIVOS         ");
-            Console.WriteLine("==================================================");
+            consola.Limpiar();
+            consola.Escribir("==================================================\n");
+            consola.Escribir("             LISTADO DE PRÉSTAMOS ACTIVOS         \n");
+            consola.Escribir("==================================================\n");
 
             var activos = await PrestamoServicio.ListarPrestamosActivosAsync();
 
             if (!activos.Any())
             {
-                Console.WriteLine("\n[INFORMACIÓN] No hay préstamos en circulación actualmente.");
+                consola.Escribir("\n[INFORMACIÓN] No hay préstamos en circulación actualmente.\n");
             }
             else
             {
-                Console.WriteLine("ID Préstamo | Ejemplar | Usuario                        | F. Préstamo | F. Límite   | Material");
-                Console.WriteLine("-------------------------------------------------------------------------------------------------");
+                consola.Escribir("ID Préstamo | Ejemplar | Usuario                        | F. Préstamo | F. Límite   | Material\n");
+                consola.Escribir("-------------------------------------------------------------------------------------------------\n");
+
                 foreach (var p in activos)
                 {
                     string usuario = p.FkusuarioNavigation != null
@@ -243,12 +252,12 @@ namespace ProyectoConjuntoMaterialPrestamo.Frontend
                     string titulo = p.FkejemplarNavigation?.FkmaterialBibliotecaNavigation?.Titulo ?? "Material Desconocido";
                     int idEjemplar = p.FkejemplarNavigation?.IdEjemplar ?? 0;
 
-                    Console.WriteLine($"{p.IdPrestamo,-11} | #{idEjemplar,-7} | {usuario,-30} | {p.FechaSalida:dd/MM/yyyy} | {p.FechaLimiteDevolucion:dd/MM/yyyy} | {titulo}");
+                    consola.Escribir($"{p.IdPrestamo,-11} | #{idEjemplar,-7} | {usuario,-30} | {p.FechaSalida:dd/MM/yyyy} | {p.FechaLimiteDevolucion:dd/MM/yyyy} | {titulo}\n");
                 }
             }
 
-            Console.WriteLine("\nPresione cualquier tecla para retornar al menú...");
-            Console.ReadKey();
+            consola.Escribir("\nPresione cualquier tecla para retornar al menú...\n");
+            consola.EsperarTecla();
         }
     }
 }

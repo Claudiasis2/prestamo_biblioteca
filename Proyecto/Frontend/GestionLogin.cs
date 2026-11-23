@@ -1,48 +1,46 @@
-﻿using ProyectoConjuntoMaterialPrestamo.Models;
+﻿
+using ProyectoConjuntoMaterialPrestamo.Models;
 using ProyectoConjuntoMaterialPrestamo.Servicios;
-using System;
-using System.Threading.Tasks;
 
 namespace ProyectoConjuntoMaterialPrestamo.Frontend
 {
     static class GestionLogin
     {
-        public static async Task<Usuario?> LoginAsync()
+        public static async Task<Usuario?> LoginAsync(IConsola consola)
         {
-            Console.Clear();
-            Console.WriteLine("==================================================");
-            Console.WriteLine("                   INICIO DE SESIÓN               ");
-            Console.WriteLine("==================================================");
-            string Email = LeerTexto("Email: ");
-            string Password = LeerTexto("Password: ");
+            consola.Limpiar();
 
-            var usuario = await LoginServicio.LoginAsync(Email, Password);
+            consola.Escribir("==================================================\n");
+            consola.Escribir("                   INICIO DE SESIÓN               \n");
+            consola.Escribir("==================================================\n");
+
+            consola.Escribir("Email: ");
+            string email = consola.LeerTexto();
+
+            consola.Escribir("Password: ");
+            string password = consola.LeerTexto();
+
+            var usuario = await LoginServicio.LoginAsync(email, password);
 
             if (usuario != null)
             {
-                Console.WriteLine($"\n¡BIENVENIDO/A {usuario.NombreUsuario.Trim()}!");
-                SalirPantalla();
+                consola.Escribir($"\n¡BIENVENIDO/A {usuario.NombreUsuario.Trim()}!\n");
+                SalirPantalla(consola);
                 return usuario;
             }
             else
             {
-                Console.WriteLine("\n[ERROR] Credenciales incorrectas o usuario inactivo.");
-                SalirPantalla();
+                consola.Escribir("\n[ERROR] Credenciales incorrectas o usuario inactivo.\n");
+                SalirPantalla(consola);
                 return null;
             }
         }
 
-        static string LeerTexto(string mensaje)
+        public static void SalirPantalla(IConsola consola)
         {
-            Console.Write(mensaje);
-            return Console.ReadLine()?.Trim() ?? "";
-        }
-
-        public static void SalirPantalla()
-        {
-            Console.WriteLine("\nPulsa una tecla para continuar...");
-            Console.ReadKey();
-            Console.Clear();
+            consola.Escribir("\nPulsa una tecla para continuar...\n");
+            consola.EsperarTecla();
+            consola.Limpiar();
         }
     }
 }

@@ -54,6 +54,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
                     AnioPublicacion = e.AnioPublicacion,
                     DuracionMinutos = e.DuracionMinutos,
                     NombreArtista = e.NombreArtista,
+                    FktipoMedio = e.FktipoMedio,
                     Autor = e.Autor,
                     NumeroPaginas = e.NumeroPaginas,
                     Isbn = e.Isbn,
@@ -66,7 +67,7 @@ namespace ProyectoConjuntoMaterialPrestamo.EF
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error accediendo a DB: {ex.Message}");
+                Console.WriteLine($"Error accediendo a DB: {ex}");
                 return 0;
             }
 
